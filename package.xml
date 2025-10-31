@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>chair_detector</name>
+  <name>cone_detector</name>
   <version>0.0.0</version>
   <description>TODO: Package description</description>
   <maintainer email="oumuika@gmail.com">jetson</maintainer>
@@ -11,6 +11,8 @@
 
   <build_depend>sensor_msgs</build_depend>
   <build_depend>laser_geometry</build_depend>
+  
+  <build_depend>libopencv-dev</build_depend>
 
 
   <exec_depend>rclcpp</exec_depend>
@@ -23,6 +25,10 @@
   <exec_depend>tf2</exec_depend>
   <exec_depend>tf2_ros</exec_depend>
   <exec_depend>tf2_geometry_msgs</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+  <depend>image_transport</depend>
+  <depend>cv_bridge</depend>
+  
 
   <export>
     <build_type>ament_cmake</build_type>
