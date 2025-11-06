@@ -26,6 +26,8 @@ find_package(geometry_msgs REQUIRED) # 追加 (PolygonStampedのため)
 find_package(OpenCV REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(image_transport REQUIRED)
+find_package(image_geometry REQUIRED)
+find_package(message_filters REQUIRED)
 
 
 include_directories(
@@ -98,6 +100,28 @@ target_link_libraries(cone_color_detector_node
   ${OpenCV_LIBRARIES}
   ${PCL_LIBRARIES}
   ${image_transport_LIBRARIES}
+)
+
+add_executable(cone_fusion_node src/cone_fusion_node.cpp)
+ament_target_dependencies(cone_fusion_node
+  rclcpp
+  sensor_msgs
+  pcl_conversions
+  tf2_geometry_msgs
+  image_geometry
+  # message_filters (今回は使わなかった)
+)
+target_link_libraries(cone_fusion_node
+  ${PCL_LIBRARIES}
+  ${tf2_ros_LIBRARIES}
+)
+
+# (install(TARGETS ...) の中に追記)
+install(TARGETS
+  # ... (既存のノード) ...
+  cone_color_detector_node
+  cone_fusion_node  # これを追記
+  DESTINATION lib/${PROJECT_NAME}
 )
 
 # --- ここまで追加 ---

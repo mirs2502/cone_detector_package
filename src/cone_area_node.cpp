@@ -12,7 +12,7 @@ class ConeAreaNode : public rclcpp::Node {
 public:
     ConeAreaNode() : Node("cone_area_node") {
         centers_subscription_ = this->create_subscription<sensor_msgs::msg::PointCloud2>(
-            "/cone_centers", // ステップ1の出力
+            "/confirmed_cones", // フュージョンノードの出力に変更
             10,
             std::bind(&ConeAreaNode::centersCallback, this, std::placeholders::_1));
 

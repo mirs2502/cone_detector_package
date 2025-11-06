@@ -11,7 +11,7 @@ def generate_launch_description():
         executable='v4l2_camera_node',
         name='v4l2_camera',
         # /dev/video0 はご自身の環境に合わせて変更してください
-        parameters=[{'video_device': '/dev/video0'}],
+        parameters=[{'video_device': '/dev/video2'}],
         remappings=[
             ('camera/image_raw', '/image_raw'),
             ('camera/camera_info', '/camera_info')
@@ -66,6 +66,13 @@ def generate_launch_description():
         name='cone_color_detector_node',
         output='screen',
     )
+    
+    cone_fusion = Node(
+        package='cone_detector',
+        executable='cone_fusion_node',
+        name='cone_fusion_node',
+        output='screen',
+    )
 
     ld = LaunchDescription()
     ld.add_action(camera_node)
@@ -75,5 +82,6 @@ def generate_launch_description():
     ld.add_action(cone_cluster) # 追加
     ld.add_action(cone_area)    # 追加
     ld.add_action(cone_color_detector)
+    ld.add_action(cone_fusion)
 
     return ld
