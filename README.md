@@ -35,7 +35,7 @@ sudo apt install ros-humble-pcl-conversions ros-humble-cv-bridge \
 # ライブラリ本体
 sudo apt install libpcl-dev libopencv-dev
 ```
-─────────────────────────────────────────────────────────────────────────
+---
 
 ## 起動方法
 1. **`(ターミナル1) ロボット本体（Odom）とLiDARドライバを起動`**
