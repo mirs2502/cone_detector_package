@@ -38,7 +38,7 @@ def generate_launch_description():
     
     # Scan -> PointCloud ノード (既存)
     scan_to_pointcloud = Node(
-        package='chair_detector',  
+        package='cone_detector',  
         executable='scan_to_pointcloud',  
         name='scan_to_pointcloud',
         output='screen',
@@ -46,7 +46,7 @@ def generate_launch_description():
 
     # 【追加】LiDARクラスタリングノード
     cone_cluster = Node(
-        package='chair_detector',
+        package='cone_detector',
         executable='cone_cluster_node',
         name='cone_cluster_node',
         output='screen',
@@ -54,14 +54,14 @@ def generate_launch_description():
 
     # 【追加】凸包計算ノード
     cone_area = Node(
-        package='chair_detector',
+        package='cone_detector',
         executable='cone_area_node',
         name='cone_area_node',
         output='screen',
     )
     
     cone_color_detector = Node(
-        package='chair_detector',
+        package='cone_detector',
         executable='cone_color_detector_node',
         name='cone_color_detector_node',
         output='screen',

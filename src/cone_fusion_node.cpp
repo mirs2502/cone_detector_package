@@ -97,7 +97,7 @@ private:
             tf_stamped = tf_buffer_.lookupTransform(
                 camera_frame_id_,        // 変換先のフレーム (例: "camera_link")
                 lidar_msg->header.frame_id, // 変換元のフレーム (例: "laser")
-                lidar_msg->header.stamp,    // 変換する時刻 (LiDARスキャン時)
+                rclcpp::Time(0),    // 変換する時刻 (LiDARスキャン時)
                 rclcpp::Duration::from_seconds(0.1)); // 待機時間
         }
         catch (tf2::TransformException &ex)
@@ -142,7 +142,7 @@ private:
                 double distance = std::hypot(pt_2d.x - color_point.x, pt_2d.y - color_point.y);
                 
                 // 投影された点と色候補の距離が 20ピクセル以内 なら一致とみなす (★要調整★)
-                if (distance < 20.0)
+                if (distance < 100.0)
                 {
                     found_color_match = true;
                     break; // 一致する色を一つ見つけたらループを抜ける

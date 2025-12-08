@@ -23,6 +23,7 @@ find_package(tf2 REQUIRED)  # tf2を追加
 find_package(tf2_ros REQUIRED)  # tf2_rosも追加
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED) # 追加 (PolygonStampedのため)
+find_package(tf2_sensor_msgs REQUIRED)
 find_package(OpenCV REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(image_transport REQUIRED)
@@ -49,7 +50,13 @@ ament_target_dependencies(leg_detector
 )
 
 add_executable(scan_to_pointcloud src/scan_to_pointcloud.cpp)
-ament_target_dependencies(scan_to_pointcloud rclcpp sensor_msgs laser_geometry)
+ament_target_dependencies(scan_to_pointcloud
+ rclcpp 
+ sensor_msgs 
+ laser_geometry
+ tf2_ros
+ tf2_sensor_msgs
+ )
 
 add_executable(chair_detector src/chair_detector_v3.cpp)
 target_link_libraries(chair_detector 
@@ -65,6 +72,9 @@ ament_target_dependencies(chair_detector
   tf2_geometry_msgs
 )
 
+target_link_libraries(scan_to_pointcloud
+  ${tf2_ros_LIBRARIES}
+)
 # --- ここから追加 ---
 
 add_executable(cone_cluster_node src/cone_cluster_node.cpp)
