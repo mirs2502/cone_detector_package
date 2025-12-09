@@ -76,6 +76,15 @@ def generate_launch_description():
         output='screen',
         parameters=[{'use_sim_time': use_sim_time}]
     )
+    
+    # --- 7. 【新規】ランドマーク自己位置推定 (landmark_localizer) ---
+    landmark_localizer = Node(
+        package='cone_detector', # setup.pyがあるパッケージ名
+        executable='landmark_localizer.py',
+        name='landmark_localizer',
+        output='screen',
+        parameters=[{'min_shared_landmarks': 1}]
+    )
 
     return LaunchDescription([
         DeclareLaunchArgument('use_sim_time', default_value='false'),
@@ -86,5 +95,6 @@ def generate_launch_description():
         cone_cluster,
         cone_accumulator,
         cone_area,
-        zigzag_generator
+        zigzag_generator,
+        landmark_localizer
     ])
