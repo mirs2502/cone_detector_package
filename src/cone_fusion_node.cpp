@@ -97,7 +97,7 @@ private:
             tf_stamped = tf_buffer_.lookupTransform(
                 camera_frame_id_,        // 変換先のフレーム (例: "camera_link")
                 lidar_msg->header.frame_id, // 変換元のフレーム (例: "laser")
-                rclcpp::Time(0),    // 変換する時刻 (LiDARスキャン時)
+                tf2::TimePointZero,    // 最新のTFを取得
                 rclcpp::Duration::from_seconds(0.1)); // 待機時間
         }
         catch (tf2::TransformException &ex)
