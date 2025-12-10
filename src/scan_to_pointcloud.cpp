@@ -33,7 +33,7 @@ void scanCallback(const sensor_msgs::msg::LaserScan::SharedPtr scan_msg)
         try
         {
             // 1. ターゲットフレームを定義
-            std::string target_frame = "odom";
+            std::string target_frame = "base_link"; //12月10日odomから変更
             
             // 2. laser_geometryにTFリスナーを渡して変換させる
             // (canTransformチェックを削除し、この関数にTF待機を任せる)

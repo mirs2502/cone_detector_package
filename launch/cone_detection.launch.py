@@ -11,21 +11,21 @@ def generate_launch_description():
         executable='v4l2_camera_node',
         name='v4l2_camera',
         # /dev/video0 はご自身の環境に合わせて変更してください
-        parameters=[{'video_device': '/dev/video2'}],
+        parameters=[{'video_device': '/dev/video2','frame_id': 'camera'}],
         remappings=[
             ('camera/image_raw', '/image_raw'),
             ('camera/camera_info', '/camera_info')
         ]
     )
 
-    # 静的TF（座標変換）の設定 (base_link -> laser)
+    # 静的TF（座標変換）の設定 (base_link -> laser) mirs_mg5を優先するためコメントアウト
     # arguments の値はご自身のロボットの測定値に変更してください
-    static_tf_lidar = Node(
-        package='tf2_ros', 
-        executable='static_transform_publisher',
-        # [X, Y, Z, Yaw, Pitch, Roll] (base_link -> laser)
-        arguments = ['0.1', '0.0', '0.2', '0', '0', '0', 'base_link', 'laser']
-    )
+    #static_tf_lidar = Node(
+    #    package='tf2_ros', 
+    #    executable='static_transform_publisher',
+    #    # [X, Y, Z, Yaw, Pitch, Roll] (base_link -> laser)
+    #    arguments = ['0.1', '0.0', '0.2', '0', '0', '0', 'base_link', 'laser']
+    #)
     
     # 静的TF（座標変換）の設定 (base_link -> camera_link)
     # arguments の値はご自身のロボットの測定値に変更してください
@@ -33,7 +33,8 @@ def generate_launch_description():
         package='tf2_ros', 
         executable='static_transform_publisher',
         # [X, Y, Z, Yaw, Pitch, Roll] (base_link -> camera_link)
-        arguments = ['0.15', '0.0', '0.3', '0', '0', '0', 'base_link', 'camera_link']
+        # Optical Frame (Z-forward) に合わせるため回転を追加: Yaw=-90deg, Roll=-90deg
+        arguments = ['0.15', '0.0', '0.3', '-1.5707', '0', '-1.5707', 'base_link', 'camera']
     )
     
     # Scan -> PointCloud ノード (既存)
@@ -76,7 +77,7 @@ def generate_launch_description():
 
     ld = LaunchDescription()
     ld.add_action(camera_node)
-    ld.add_action(static_tf_lidar)
+    #ld.add_action(static_tf_lidar)
     ld.add_action(static_tf_camera)
     ld.add_action(scan_to_pointcloud)
     ld.add_action(cone_cluster) # 追加

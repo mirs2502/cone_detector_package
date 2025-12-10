@@ -55,16 +55,56 @@ private:
             RCLCPP_ERROR(this->get_logger(), "Failed to initialize camera model");
         } else {
             cam_model_initialized_ = true;
-            camera_frame_id_ = msg->header.frame_id; // "camera_link" など
-            RCLCPP_INFO(this->get_logger(), "Camera model initialized!");
-            // 一度受信したらサブスクライバを停止
-            camera_info_sub_.reset();
+            if (msg->header.frame_id.empty()) {
+                camera_frame_id_ = "camera";
+                RCLCPP_WARN(this->get_logger(), "CameraInfo frame_id is empty. Using default 'camera'.");
+            } else {
+                camera_frame_id_ = msg->header.frame_id;
+            }
+            
+            RCLCPP_INFO(this->get_logger(), "CameraInfo K[0]: %f, P[0]: %f", msg->k[0], msg->p[0]);
+            
+            if (msg->k[0] == 0.0) {
+                 RCLCPP_WARN(this->get_logger(), "Camera uncalibrated! Using default parameters for 640x480.");
+                 auto mutable_msg = std::make_shared<sensor_msgs::msg::CameraInfo>(*msg);
+                 
+                 mutable_msg->width = 640;
+                 mutable_msg->height = 480;
+                 
+                 // K行列 (3x3)
+                 mutable_msg->k[0] = 500.0; // fx
+                 mutable_msg->k[2] = 320.0; // cx
+                 mutable_msg->k[4] = 500.0; // fy
+                 mutable_msg->k[5] = 240.0; // cy
+                 mutable_msg->k[8] = 1.0;
+                 
+                 // P行列 (3x4)
+                 mutable_msg->p[0] = 500.0; // fx
+                 mutable_msg->p[2] = 320.0; // cx
+                 mutable_msg->p[5] = 500.0; // fy
+                 mutable_msg->p[6] = 240.0; // cy
+                 mutable_msg->p[10] = 1.0;
+
+                 cam_model_.fromCameraInfo(mutable_msg);
+            } else {
+                 cam_model_.fromCameraInfo(msg);
+            }
+
+            if (!cam_model_.initialized()) { // check if initialization succeeded
+                 RCLCPP_ERROR(this->get_logger(), "Failed to initialize camera model even after fallback");
+            } else {
+                 RCLCPP_INFO(this->get_logger(), "Camera model initialized!");
+                 cam_model_initialized_ = true;
+                 // 一度受信したらサブスクライバを停止
+                 camera_info_sub_.reset();
+            }
         }
     }
 
     // カメラの色候補（ピクセル座標）を受信したら、最新のものを保持
     void colorCallback(const sensor_msgs::msg::PointCloud2::SharedPtr msg)
     {
+        RCLCPP_INFO_ONCE(this->get_logger(), "Received first color regions message!");
         latest_color_regions_ = msg;
     }
 
@@ -74,7 +114,10 @@ private:
         // 必要な情報（カメラモデル、色候補）がまだ来ていないなら何もしない
         if (!cam_model_initialized_ || !latest_color_regions_)
         {
-            RCLCPP_WARN_ONCE(this->get_logger(), "Waiting for camera model or color regions...");
+            RCLCPP_WARN_THROTTLE(this->get_logger(), *this->get_clock(), 2000, 
+                "Waiting for: %s %s", 
+                cam_model_initialized_ ? "" : "CameraModel",
+                latest_color_regions_ ? "" : "ColorRegions");
             return;
         }
 
@@ -85,6 +128,8 @@ private:
         // カメラの色候補 (PCL形式、x,yにピクセル座標が入っている)
         pcl::PointCloud<pcl::PointXYZ> color_cloud;
         pcl::fromROSMsg(*latest_color_regions_, color_cloud);
+        
+        RCLCPP_INFO(this->get_logger(), "Lidar points: %zu, Color regions: %zu", lidar_cloud.points.size(), color_cloud.points.size());
 
         // 確定したコーン（フュージョンが成功した点）を格納するPCL点群
         pcl::PointCloud<pcl::PointXYZ> confirmed_cloud;
@@ -129,6 +174,7 @@ private:
             {
                 pt_2d = cam_model_.project3dToPixel(pt_3d);
             } else {
+                RCLCPP_INFO(this->get_logger(), "Point behind camera: z=%f", pt_3d.z);
                 continue; // カメラの後ろにある点は無視
             }
 
@@ -152,8 +198,13 @@ private:
             // 4. 一致したら、「本物のコーン」として元のLiDARの点（map座標系など）を追加
             if (found_color_match)
             {
+                RCLCPP_INFO(this->get_logger(), "Match found! 3D(cam): [%.2f, %.2f, %.2f] -> 2D: [%.1f, %.1f]", 
+                            pt_3d.x, pt_3d.y, pt_3d.z, pt_2d.x, pt_2d.y);
                 // 元の座標（lidar_point）を追加
                 confirmed_cloud.points.push_back(lidar_point);
+            } else {
+                 RCLCPP_INFO(this->get_logger(), "No match. 3D(cam): [%.2f, %.2f, %.2f] -> 2D: [%.1f, %.1f]", 
+                            pt_3d.x, pt_3d.y, pt_3d.z, pt_2d.x, pt_2d.y);
             }
         }
 
