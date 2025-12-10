@@ -35,6 +35,7 @@ include_directories(
   ${PCL_INCLUDE_DIRS}
   ${EIGEN3_INCLUDE_DIR}
   ${OpenCV_INCLUDE_DIRS}
+  include/tf2_shim
 )
 
 
@@ -96,6 +97,10 @@ ament_target_dependencies(cone_area_node
   sensor_msgs
   pcl_conversions
   geometry_msgs
+  tf2
+  tf2_ros
+  tf2_geometry_msgs
+  tf2_sensor_msgs
 )
 
 add_executable(cone_color_detector_node src/cone_color_detector_node.cpp)
@@ -118,6 +123,8 @@ ament_target_dependencies(cone_fusion_node
   sensor_msgs
   pcl_conversions
   tf2_geometry_msgs
+  tf2
+  tf2_ros
   image_geometry
   # message_filters (今回は使わなかった)
 )
