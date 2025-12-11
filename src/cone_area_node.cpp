@@ -29,6 +29,7 @@ public:
             std::bind(&ConeAreaNode::centersCallback, this, std::placeholders::_1));
 
         polygon_publisher_ = this->create_publisher<geometry_msgs::msg::PolygonStamped>("/cone_area", 10);
+        accumulated_publisher_ = this->create_publisher<sensor_msgs::msg::PointCloud2>("/accumulated_cones", 10);
         
         // 記憶用クラウドの初期化
         accumulated_cones_.reset(new pcl::PointCloud<pcl::PointXYZ>);
@@ -64,6 +65,15 @@ private:
                 accumulated_cones_->points.push_back(new_pt);
                 updated = true;
             }
+        }
+
+        // デバッグ用: 蓄積されたコーン点群をパブリッシュ
+        if (accumulated_cones_->points.size() > 0) {
+            sensor_msgs::msg::PointCloud2 accumulated_msg;
+            pcl::toROSMsg(*accumulated_cones_, accumulated_msg);
+            accumulated_msg.header.frame_id = target_frame_;
+            accumulated_msg.header.stamp = this->now();
+            accumulated_publisher_->publish(accumulated_msg);
         }
 
         // 4. コーンが3つ以上あれば凸包（エリア）を計算
@@ -114,6 +124,7 @@ private:
 
     rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr centers_subscription_;
     rclcpp::Publisher<geometry_msgs::msg::PolygonStamped>::SharedPtr polygon_publisher_;
+    rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr accumulated_publisher_;
     
     // TF関連
     tf2_ros::Buffer tf_buffer_;

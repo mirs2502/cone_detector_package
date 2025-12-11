@@ -187,7 +187,7 @@ private:
                 // ピクセル距離を計算
                 double distance = std::hypot(pt_2d.x - color_point.x, pt_2d.y - color_point.y);
                 
-                // 投影された点と色候補の距離が 20ピクセル以内 なら一致とみなす (★要調整★)
+                // 投影された点と色候補の距離が 100ピクセル以内 なら一致とみなす
                 if (distance < 100.0)
                 {
                     found_color_match = true;

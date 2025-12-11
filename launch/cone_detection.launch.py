@@ -33,7 +33,6 @@ def generate_launch_description():
         package='tf2_ros', 
         executable='static_transform_publisher',
         # [X, Y, Z, Yaw, Pitch, Roll] (base_link -> camera_link)
-        # Optical Frame (Z-forward) に合わせるため回転を追加: Yaw=-90deg, Roll=-90deg
         arguments = ['0.15', '0.0', '0.3', '-1.5707', '0', '-1.5707', 'base_link', 'camera']
     )
     
