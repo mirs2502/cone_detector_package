@@ -35,6 +35,7 @@ include_directories(
   ${PCL_INCLUDE_DIRS}
   ${EIGEN3_INCLUDE_DIR}
   ${OpenCV_INCLUDE_DIRS}
+  include/tf2_shim
 )
 
 
