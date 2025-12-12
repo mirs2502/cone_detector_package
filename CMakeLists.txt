@@ -39,16 +39,6 @@ include_directories(
 )
 
 
-add_executable(leg_detector src/leg_detector_v2.cpp)
-target_link_libraries(leg_detector 
-  ${PCL_LIBRARIES}
-)
-ament_target_dependencies(leg_detector
-  rclcpp
-  sensor_msgs
-  pcl_conversions
-  visualization_msgs
-)
 
 add_executable(scan_to_pointcloud src/scan_to_pointcloud.cpp)
 ament_target_dependencies(scan_to_pointcloud
@@ -59,19 +49,6 @@ ament_target_dependencies(scan_to_pointcloud
  tf2_sensor_msgs
  )
 
-add_executable(chair_detector src/chair_detector_v3.cpp)
-target_link_libraries(chair_detector 
-  ${PCL_LIBRARIES}
-)
-ament_target_dependencies(chair_detector
-  rclcpp
-  sensor_msgs
-  pcl_conversions
-  visualization_msgs
-  tf2
-  tf2_ros
-  tf2_geometry_msgs
-)
 
 target_link_libraries(scan_to_pointcloud
   ${tf2_ros_LIBRARIES}
@@ -147,8 +124,6 @@ install(TARGETS
 # インストールの設定
 install(TARGETS
   scan_to_pointcloud
-  leg_detector
-  chair_detector
   cone_cluster_node  # 追加
   cone_area_node     # 追加
   cone_color_detector_node  # これを追記
@@ -158,6 +133,7 @@ install(TARGETS
 install(PROGRAMS
   scripts/landmark_localizer.py
   DESTINATION lib/${PROJECT_NAME}
+  RENAME landmark_localizer
 )
 
 install(DIRECTORY

@@ -10,8 +10,7 @@ def generate_launch_description():
         package='v4l2_camera',
         executable='v4l2_camera_node',
         name='v4l2_camera',
-        # /dev/video0 はご自身の環境に合わせて変更してください
-        parameters=[{'video_device': '/dev/video2','frame_id': 'camera'}],
+        parameters=[{'video_device': '/dev/video3', 'frame_id': 'camera'}],
         remappings=[
             ('camera/image_raw', '/image_raw'),
             ('camera/camera_info', '/camera_info')
