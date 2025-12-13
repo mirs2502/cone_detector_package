@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import PointCloud2
@@ -93,8 +94,8 @@ class LandmarkLocalizer(Node):
         translations = np.array(translations)
         avg_translation = np.mean(translations, axis=0)
         
-        robot_x = avg_translation[0]
-        robot_y = avg_translation[1]
+        robot_x = float(avg_translation[0])
+        robot_y = float(avg_translation[1])
 
         # --- 向き (Yaw) の計算 (コーンが2個以上見える場合のみ) ---
         # 今回はシンプルにするため、Yaw補正はEKFに任せて Position (X,Y) だけ更新する設定にします。
@@ -107,8 +108,8 @@ class LandmarkLocalizer(Node):
         msg.header.stamp = self.get_clock().now().to_msg()
         msg.header.frame_id = 'map' # 地図座標系
 
-        msg.pose.pose.position.x = x
-        msg.pose.pose.position.y = y
+        msg.pose.pose.position.x = float(x)
+        msg.pose.pose.position.y = float(y)
         msg.pose.pose.position.z = 0.0
         
         # 回転は「不明(単位行列)」として出力し、共分散を大きくして無視させる手もあるが、
@@ -137,3 +138,6 @@ def main(args=None):
     rclpy.spin(node)
     node.destroy_node()
     rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()
