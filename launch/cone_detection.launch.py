@@ -72,6 +72,10 @@ def generate_launch_description():
         executable='cone_fusion_node',
         name='cone_fusion_node',
         output='screen',
+        parameters=[{
+            'fusion_pixel_threshold': 300.0,
+            'min_confirmation_count': 1,
+        }],
     )
 
     ld = LaunchDescription()

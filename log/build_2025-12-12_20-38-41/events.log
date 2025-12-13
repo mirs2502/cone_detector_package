@@ -1,0 +1,348 @@
+[0.000000] (-) TimerEvent: {}
+[0.000108] (cone_detector) JobQueued: {'identifier': 'cone_detector', 'dependencies': OrderedDict()}
+[0.000812] (cone_detector) JobStarted: {'identifier': 'cone_detector'}
+[0.012311] (cone_detector) JobProgress: {'identifier': 'cone_detector', 'progress': 'cmake'}
+[0.012625] (cone_detector) Command: {'cmd': ['/usr/bin/cmake', '/home/yzksy/mirs2502_standard/src/cone_detector', '-DCMAKE_INSTALL_PREFIX=/home/yzksy/mirs2502_standard/src/cone_detector/install/cone_detector'], 'cwd': '/home/yzksy/mirs2502_standard/src/cone_detector/build/cone_detector', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('LANGUAGE', 'ja:en_US:en'), ('USER', 'yzksy'), ('LC_TIME', 'ja_JP.UTF-8'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/yzksy/mirs2502_standard/install/mirs_msgs/lib:/home/yzksy/mirs2502_standard/install/micro_ros_agent/lib:/home/yzksy/mirs2502_standard/install/groot/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/yzksy'), ('OLDPWD', '/home/yzksy/mirs2502_standard/src'), ('DESKTOP_SESSION', 'ubuntu'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('LC_MONETARY', 'ja_JP.UTF-8'), ('SYSTEMD_EXEC_PID', '1230'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('COLCON_PREFIX_PATH', '/home/yzksy/mirs2502_standard/install:/home/yzksy/install'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'yzksy'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'yzksy'), ('TERM', 'xterm-256color'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/home/yzksy/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/yzksypc:@/tmp/.ICE-unix/1195,unix/yzksypc:/tmp/.ICE-unix/1195'), ('PAPERSIZE', 'a4'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'ja_JP.UTF-8'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/c388f24b_f9bb_4e46_92e2_a4054bdb1d51'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('LANG', 'ja_JP.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('LC_TELEPHONE', 'ja_JP.UTF-8'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.TVIJH3'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.111'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('ROS_DOMAIN_ID', '90'), ('AMENT_PREFIX_PATH', '/home/yzksy/mirs2502_standard/install/sllidar_ros2:/home/yzksy/mirs2502_standard/install/mirs:/home/yzksy/mirs2502_standard/install/mirs_msgs:/home/yzksy/mirs2502_standard/install/micro_ros_agent:/home/yzksy/mirs2502_standard/install/groot:/home/yzksy/mirs2502_standard/install/coverage_planner:/home/yzksy/mirs2502_standard/install/cone_detector:/home/yzksy/install/chair_detector:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LC_NAME', 'ja_JP.UTF-8'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('LC_MEASUREMENT', 'ja_JP.UTF-8'), ('LC_IDENTIFICATION', 'ja_JP.UTF-8'), ('QT_IM_MODULE', 'ibus'), ('PWD', '/home/yzksy/mirs2502_standard/src/cone_detector/build/cone_detector'), ('LC_ALL', 'en_US.UTF-8'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/yzksy/mirs2502_standard/install/mirs_msgs/local/lib/python3.10/dist-packages:/home/yzksy/mirs2502_standard/build/coverage_planner:/home/yzksy/mirs2502_standard/install/coverage_planner/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('LC_NUMERIC', 'ja_JP.UTF-8'), ('LC_PAPER', 'ja_JP.UTF-8'), ('COLCON', '1'), ('VTE_VERSION', '6800'), ('CMAKE_PREFIX_PATH', '/home/yzksy/mirs2502_standard/install/sllidar_ros2:/home/yzksy/mirs2502_standard/install/mirs:/home/yzksy/mirs2502_standard/install/mirs_msgs:/home/yzksy/mirs2502_standard/install/micro_ros_agent:/home/yzksy/mirs2502_standard/install/groot:/home/yzksy/mirs2502_standard/install/cone_detector:/home/yzksy/install/chair_detector:/home/yzksy/mirs2502_standard/install/coverage_planner:/opt/ros/humble')]), 'shell': False}
+[0.099849] (-) TimerEvent: {}
+[0.189537] (cone_detector) StdoutLine: {'line': b'-- The C compiler identification is GNU 11.4.0\n'}
+[0.199931] (-) TimerEvent: {}
+[0.299174] (cone_detector) StdoutLine: {'line': b'-- The CXX compiler identification is GNU 11.4.0\n'}
+[0.300007] (-) TimerEvent: {}
+[0.312555] (cone_detector) StdoutLine: {'line': b'-- Detecting C compiler ABI info\n'}
+[0.370825] (cone_detector) StdoutLine: {'line': b'-- Detecting C compiler ABI info - done\n'}
+[0.375716] (cone_detector) StdoutLine: {'line': b'-- Check for working C compiler: /usr/bin/cc - skipped\n'}
+[0.376463] (cone_detector) StdoutLine: {'line': b'-- Detecting C compile features\n'}
+[0.377376] (cone_detector) StdoutLine: {'line': b'-- Detecting C compile features - done\n'}
+[0.381363] (cone_detector) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info\n'}
+[0.400074] (-) TimerEvent: {}
+[0.444771] (cone_detector) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info - done\n'}
+[0.449918] (cone_detector) StdoutLine: {'line': b'-- Check for working CXX compiler: /usr/bin/c++ - skipped\n'}
+[0.450158] (cone_detector) StdoutLine: {'line': b'-- Detecting CXX compile features\n'}
+[0.450481] (cone_detector) StdoutLine: {'line': b'-- Detecting CXX compile features - done\n'}
+[0.463689] (cone_detector) StdoutLine: {'line': b'-- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)\n'}
+[0.500148] (-) TimerEvent: {}
+[0.587802] (cone_detector) StdoutLine: {'line': b'-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter \n'}
+[0.600221] (-) TimerEvent: {}
+[0.690172] (cone_detector) StdoutLine: {'line': b'-- Found sensor_msgs: 4.9.0 (/opt/ros/humble/share/sensor_msgs/cmake)\n'}
+[0.700311] (-) TimerEvent: {}
+[0.739223] (cone_detector) StdoutLine: {'line': b'-- Found rosidl_generator_c: 3.1.7 (/opt/ros/humble/share/rosidl_generator_c/cmake)\n'}
+[0.747572] (cone_detector) StdoutLine: {'line': b'-- Found rosidl_adapter: 3.1.7 (/opt/ros/humble/share/rosidl_adapter/cmake)\n'}
+[0.759314] (cone_detector) StdoutLine: {'line': b'-- Found rosidl_generator_cpp: 3.1.7 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)\n'}
+[0.775986] (cone_detector) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[0.795268] (cone_detector) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[0.800663] (-) TimerEvent: {}
+[0.895869] (cone_detector) StdoutLine: {'line': b"-- Checking for module 'eigen3'\n"}
+[0.900750] (-) TimerEvent: {}
+[0.908579] (cone_detector) StdoutLine: {'line': b'--   Found eigen3, version 3.4.0\n'}
+[0.945070] (cone_detector) StdoutLine: {'line': b'-- Found Eigen: /usr/include/eigen3 (Required is at least version "3.1") \n'}
+[0.945282] (cone_detector) StdoutLine: {'line': b'-- Eigen found (include: /usr/include/eigen3, version: 3.4.0)\n'}
+[0.987138] (cone_detector) StdoutLine: {'line': b'-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found suitable version "1.74.0", minimum required is "1.65.0") found components: system filesystem date_time iostreams serialization \n'}
+[1.000844] (-) TimerEvent: {}
+[1.008993] (cone_detector) StdoutLine: {'line': b"-- Checking for module 'flann'\n"}
+[1.021195] (cone_detector) StdoutLine: {'line': b'--   Found flann, version 1.9.1\n'}
+[1.060804] (cone_detector) StdoutLine: {'line': b'-- Found FLANN: /usr/lib/x86_64-linux-gnu/libflann_cpp.so  \n'}
+[1.060996] (cone_detector) StdoutLine: {'line': b'-- FLANN found (include: /usr/include, lib: /usr/lib/x86_64-linux-gnu/libflann_cpp.so)\n'}
+[1.072069] (cone_detector) StdoutLine: {'line': b'-- Found Qhull version 8.0.2\n'}
+[1.101216] (-) TimerEvent: {}
+[1.114194] (cone_detector) StdoutLine: {'line': b'-- Looking for pthread.h\n'}
+[1.189290] (cone_detector) StdoutLine: {'line': b'-- Looking for pthread.h - found\n'}
+[1.189475] (cone_detector) StdoutLine: {'line': b'-- Performing Test CMAKE_HAVE_LIBC_PTHREAD\n'}
+[1.201305] (-) TimerEvent: {}
+[1.248554] (cone_detector) StdoutLine: {'line': b'-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success\n'}
+[1.249300] (cone_detector) StdoutLine: {'line': b'-- Found Threads: TRUE  \n'}
+[1.251216] (cone_detector) StdoutLine: {'line': b'-- Found GLEW: /usr/lib/x86_64-linux-gnu/libGLEW.so  \n'}
+[1.262335] (cone_detector) StdoutLine: {'line': b'-- Found OpenGL: /usr/lib/x86_64-linux-gnu/libOpenGL.so  found components: OpenGL GLX \n'}
+[1.301415] (-) TimerEvent: {}
+[1.401698] (-) TimerEvent: {}
+[1.411757] (cone_detector) StdoutLine: {'line': b'-- Found MPI_C: /usr/lib/x86_64-linux-gnu/libmpi.so (found version "3.1") \n'}
+[1.411933] (cone_detector) StdoutLine: {'line': b'-- Found MPI: TRUE (found version "3.1") found components: C \n'}
+[1.419747] (cone_detector) StdoutLine: {'line': b'-- Found JsonCpp: /usr/lib/x86_64-linux-gnu/libjsoncpp.so (found suitable version "1.9.5", minimum required is "0.7.0") \n'}
+[1.427968] (cone_detector) StdoutLine: {'line': b'-- Found ZLIB: /usr/lib/x86_64-linux-gnu/libz.so (found version "1.2.11") \n'}
+[1.441317] (cone_detector) StdoutLine: {'line': b'-- Found PNG: /usr/lib/x86_64-linux-gnu/libpng.so (found version "1.6.37") \n'}
+[1.480207] (cone_detector) StdoutLine: {'line': b'-- Found Eigen3: /usr/include/eigen3 (found version "3.4.0") \n'}
+[1.501786] (-) TimerEvent: {}
+[1.567639] (cone_detector) StdoutLine: {'line': b'-- Found X11: /usr/include   \n'}
+[1.568292] (cone_detector) StdoutLine: {'line': b'-- Looking for XOpenDisplay in /usr/lib/x86_64-linux-gnu/libX11.so;/usr/lib/x86_64-linux-gnu/libXext.so\n'}
+[1.601899] (-) TimerEvent: {}
+[1.626985] (cone_detector) StdoutLine: {'line': b'-- Looking for XOpenDisplay in /usr/lib/x86_64-linux-gnu/libX11.so;/usr/lib/x86_64-linux-gnu/libXext.so - found\n'}
+[1.627178] (cone_detector) StdoutLine: {'line': b'-- Looking for gethostbyname\n'}
+[1.683202] (cone_detector) StdoutLine: {'line': b'-- Looking for gethostbyname - found\n'}
+[1.683395] (cone_detector) StdoutLine: {'line': b'-- Looking for connect\n'}
+[1.701999] (-) TimerEvent: {}
+[1.739792] (cone_detector) StdoutLine: {'line': b'-- Looking for connect - found\n'}
+[1.739965] (cone_detector) StdoutLine: {'line': b'-- Looking for remove\n'}
+[1.795724] (cone_detector) StdoutLine: {'line': b'-- Looking for remove - found\n'}
+[1.795907] (cone_detector) StdoutLine: {'line': b'-- Looking for shmat\n'}
+[1.802057] (-) TimerEvent: {}
+[1.851884] (cone_detector) StdoutLine: {'line': b'-- Looking for shmat - found\n'}
+[1.852097] (cone_detector) StdoutLine: {'line': b'-- Looking for IceConnectionNumber in ICE\n'}
+[1.902164] (-) TimerEvent: {}
+[1.908252] (cone_detector) StdoutLine: {'line': b'-- Looking for IceConnectionNumber in ICE - found\n'}
+[1.975734] (cone_detector) StdoutLine: {'line': b'-- Found EXPAT: /usr/lib/x86_64-linux-gnu/libexpat.so (found version "2.4.7") \n'}
+[1.979055] (cone_detector) StdoutLine: {'line': b'-- Found double-conversion: /usr/lib/x86_64-linux-gnu/libdouble-conversion.so  \n'}
+[1.983796] (cone_detector) StdoutLine: {'line': b'-- Found LZ4: /usr/lib/x86_64-linux-gnu/liblz4.so (found version "1.9.3") \n'}
+[1.989018] (cone_detector) StdoutLine: {'line': b'-- Found LZMA: /usr/lib/x86_64-linux-gnu/liblzma.so (found version "5.2.5") \n'}
+[2.002230] (-) TimerEvent: {}
+[2.102429] (-) TimerEvent: {}
+[2.151678] (cone_detector) StdoutLine: {'line': b'-- Found JPEG: /usr/lib/x86_64-linux-gnu/libjpeg.so (found version "80") \n'}
+[2.159169] (cone_detector) StdoutLine: {'line': b'-- Found TIFF: /usr/lib/x86_64-linux-gnu/libtiff.so (found version "4.3.0")  \n'}
+[2.163485] (cone_detector) StdoutLine: {'line': b'-- Found Freetype: /usr/lib/x86_64-linux-gnu/libfreetype.so (found version "2.11.1") \n'}
+[2.169025] (cone_detector) StdoutLine: {'line': b'-- Found utf8cpp: /usr/include/utf8cpp  \n'}
+[2.202520] (-) TimerEvent: {}
+[2.302761] (-) TimerEvent: {}
+[2.399095] (cone_detector) StdoutLine: {'line': b'-- looking for PCL_COMMON\n'}
+[2.399709] (cone_detector) StdoutLine: {'line': b'-- Found PCL_COMMON: /usr/lib/x86_64-linux-gnu/libpcl_common.so  \n'}
+[2.399836] (cone_detector) StdoutLine: {'line': b'-- looking for PCL_KDTREE\n'}
+[2.400391] (cone_detector) StdoutLine: {'line': b'-- Found PCL_KDTREE: /usr/lib/x86_64-linux-gnu/libpcl_kdtree.so  \n'}
+[2.400504] (cone_detector) StdoutLine: {'line': b'-- looking for PCL_OCTREE\n'}
+[2.401063] (cone_detector) StdoutLine: {'line': b'-- Found PCL_OCTREE: /usr/lib/x86_64-linux-gnu/libpcl_octree.so  \n'}
+[2.401225] (cone_detector) StdoutLine: {'line': b'-- looking for PCL_SEARCH\n'}
+[2.401717] (cone_detector) StdoutLine: {'line': b'-- Found PCL_SEARCH: /usr/lib/x86_64-linux-gnu/libpcl_search.so  \n'}
+[2.401813] (cone_detector) StdoutLine: {'line': b'-- looking for PCL_SURFACE\n'}
+[2.402317] (cone_detector) StdoutLine: {'line': b'-- Found PCL_SURFACE: /usr/lib/x86_64-linux-gnu/libpcl_surface.so  \n'}
+[2.402446] (cone_detector) StdoutLine: {'line': b'-- looking for PCL_SAMPLE_CONSENSUS\n'}
+[2.402809] (-) TimerEvent: {}
+[2.402946] (cone_detector) StdoutLine: {'line': b'-- Found PCL_SAMPLE_CONSENSUS: /usr/lib/x86_64-linux-gnu/libpcl_sample_consensus.so  \n'}
+[2.403047] (cone_detector) StdoutLine: {'line': b'-- looking for PCL_FILTERS\n'}
+[2.403550] (cone_detector) StdoutLine: {'line': b'-- Found PCL_FILTERS: /usr/lib/x86_64-linux-gnu/libpcl_filters.so  \n'}
+[2.403662] (cone_detector) StdoutLine: {'line': b'-- looking for PCL_GEOMETRY\n'}
+[2.403803] (cone_detector) StdoutLine: {'line': b'-- Found PCL_GEOMETRY: /usr/include/pcl-1.12  \n'}
+[2.403868] (cone_detector) StdoutLine: {'line': b'-- looking for PCL_2D\n'}
+[2.404010] (cone_detector) StdoutLine: {'line': b'-- Found PCL_2D: /usr/include/pcl-1.12  \n'}
+[2.404103] (cone_detector) StdoutLine: {'line': b'-- looking for PCL_FEATURES\n'}
+[2.404600] (cone_detector) StdoutLine: {'line': b'-- Found PCL_FEATURES: /usr/lib/x86_64-linux-gnu/libpcl_features.so  \n'}
+[2.404743] (cone_detector) StdoutLine: {'line': b'-- looking for PCL_ML\n'}
+[2.405258] (cone_detector) StdoutLine: {'line': b'-- Found PCL_ML: /usr/lib/x86_64-linux-gnu/libpcl_ml.so  \n'}
+[2.405336] (cone_detector) StdoutLine: {'line': b'-- looking for PCL_SEGMENTATION\n'}
+[2.405842] (cone_detector) StdoutLine: {'line': b'-- Found PCL_SEGMENTATION: /usr/lib/x86_64-linux-gnu/libpcl_segmentation.so  \n'}
+[2.406240] (cone_detector) StdoutLine: {'line': b'-- Found PCL: pcl_common;pcl_kdtree;pcl_octree;pcl_search;pcl_surface;pcl_sample_consensus;pcl_filters;pcl_features;pcl_ml;pcl_segmentation;Boost::system;Boost::filesystem;Boost::date_time;Boost::iostreams;Boost::serialization;VTK::ChartsCore;VTK::CommonColor;VTK::CommonComputationalGeometry;VTK::CommonCore;VTK::CommonDataModel;VTK::CommonExecutionModel;VTK::CommonMath;VTK::CommonMisc;VTK::CommonTransforms;VTK::FiltersCore;VTK::FiltersExtraction;VTK::FiltersGeneral;VTK::FiltersGeometry;VTK::FiltersModeling;VTK::FiltersSources;VTK::ImagingCore;VTK::ImagingSources;VTK::InteractionImage;VTK::InteractionStyle;VTK::InteractionWidgets;VTK::IOCore;VTK::IOGeometry;VTK::IOImage;VTK::IOLegacy;VTK::IOPLY;VTK::RenderingAnnotation;VTK::RenderingCore;VTK::RenderingContext2D;VTK::RenderingLOD;VTK::RenderingFreeType;VTK::ViewsCore;VTK::ViewsContext2D;VTK::RenderingOpenGL2;VTK::GUISupportQt;FLANN::FLANN;QHULL::QHULL  \n'}
+[2.409555] (cone_detector) StdoutLine: {'line': b'-- Found rclcpp: 16.0.16 (/opt/ros/humble/share/rclcpp/cmake)\n'}
+[2.463871] (cone_detector) StdoutLine: {'line': b'-- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)\n'}
+[2.469244] (cone_detector) StdoutLine: {'line': b'-- Found rmw_fastrtps_cpp: 6.2.9 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)\n'}
+[2.503181] (-) TimerEvent: {}
+[2.568463] (cone_detector) StdoutLine: {'line': b'-- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")  \n'}
+[2.592348] (cone_detector) StdoutLine: {'line': b'-- Found FastRTPS: /opt/ros/humble/include  \n'}
+[2.603252] (-) TimerEvent: {}
+[2.629951] (cone_detector) StdoutLine: {'line': b"-- Using RMW implementation 'rmw_fastrtps_cpp' as default\n"}
+[2.685491] (cone_detector) StdoutLine: {'line': b'-- Found pcl_conversions: 2.4.5 (/opt/ros/humble/share/pcl_conversions/cmake)\n'}
+[2.703468] (-) TimerEvent: {}
+[2.721828] (cone_detector) StdoutLine: {'line': b'-- Found visualization_msgs: 4.9.0 (/opt/ros/humble/share/visualization_msgs/cmake)\n'}
+[2.742149] (cone_detector) StdoutLine: {'line': b'-- Found laser_geometry: 2.4.1 (/opt/ros/humble/share/laser_geometry/cmake)\n'}
+[2.767204] (cone_detector) StdoutLine: {'line': b'-- Found tf2_ros: 0.25.17 (/opt/ros/humble/share/tf2_ros/cmake)\n'}
+[2.803841] (-) TimerEvent: {}
+[2.863267] (cone_detector) StdoutLine: {'line': b'-- Found tf2_geometry_msgs: 0.25.17 (/opt/ros/humble/share/tf2_geometry_msgs/cmake)\n'}
+[2.876912] (cone_detector) StdoutLine: {'line': b'-- Found Eigen3: TRUE (found version "3.4.0") \n'}
+[2.877017] (cone_detector) StdoutLine: {'line': b'-- Ensuring Eigen3 include directory is part of orocos-kdl CMake target\n'}
+[2.880178] (cone_detector) StdoutLine: {'line': b'-- Found tf2_sensor_msgs: 0.25.17 (/opt/ros/humble/share/tf2_sensor_msgs/cmake)\n'}
+[2.891410] (cone_detector) StdoutLine: {'line': b'-- Found OpenCV: /usr (found version "4.5.4") \n'}
+[2.893993] (cone_detector) StdoutLine: {'line': b'-- Found cv_bridge: 3.2.1 (/opt/ros/humble/share/cv_bridge/cmake)\n'}
+[2.898967] (cone_detector) StdoutLine: {'line': b'-- Found image_transport: 3.1.12 (/opt/ros/humble/share/image_transport/cmake)\n'}
+[2.903926] (-) TimerEvent: {}
+[2.923069] (cone_detector) StdoutLine: {'line': b'-- Found image_geometry: 3.2.1 (/opt/ros/humble/share/image_geometry/cmake)\n'}
+[3.004044] (-) TimerEvent: {}
+[3.007150] (cone_detector) StdoutLine: {'line': b'-- Configuring done\n'}
+[3.104107] (-) TimerEvent: {}
+[3.204362] (-) TimerEvent: {}
+[3.219704] (cone_detector) StdoutLine: {'line': b'-- Generating done\n'}
+[3.237333] (cone_detector) StdoutLine: {'line': b'-- Build files have been written to: /home/yzksy/mirs2502_standard/src/cone_detector/build/cone_detector\n'}
+[3.252474] (cone_detector) CommandEnded: {'returncode': 0}
+[3.253211] (cone_detector) JobProgress: {'identifier': 'cone_detector', 'progress': 'build'}
+[3.254306] (cone_detector) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/yzksy/mirs2502_standard/src/cone_detector/build/cone_detector', '--', '-j16', '-l16'], 'cwd': '/home/yzksy/mirs2502_standard/src/cone_detector/build/cone_detector', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('LANGUAGE', 'ja:en_US:en'), ('USER', 'yzksy'), ('LC_TIME', 'ja_JP.UTF-8'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/yzksy/mirs2502_standard/install/mirs_msgs/lib:/home/yzksy/mirs2502_standard/install/micro_ros_agent/lib:/home/yzksy/mirs2502_standard/install/groot/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/yzksy'), ('OLDPWD', '/home/yzksy/mirs2502_standard/src'), ('DESKTOP_SESSION', 'ubuntu'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('LC_MONETARY', 'ja_JP.UTF-8'), ('SYSTEMD_EXEC_PID', '1230'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('COLCON_PREFIX_PATH', '/home/yzksy/mirs2502_standard/install:/home/yzksy/install'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'yzksy'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'yzksy'), ('TERM', 'xterm-256color'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/home/yzksy/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/yzksypc:@/tmp/.ICE-unix/1195,unix/yzksypc:/tmp/.ICE-unix/1195'), ('PAPERSIZE', 'a4'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'ja_JP.UTF-8'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/c388f24b_f9bb_4e46_92e2_a4054bdb1d51'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('LANG', 'ja_JP.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('LC_TELEPHONE', 'ja_JP.UTF-8'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.TVIJH3'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.111'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('ROS_DOMAIN_ID', '90'), ('AMENT_PREFIX_PATH', '/home/yzksy/mirs2502_standard/install/sllidar_ros2:/home/yzksy/mirs2502_standard/install/mirs:/home/yzksy/mirs2502_standard/install/mirs_msgs:/home/yzksy/mirs2502_standard/install/micro_ros_agent:/home/yzksy/mirs2502_standard/install/groot:/home/yzksy/mirs2502_standard/install/coverage_planner:/home/yzksy/mirs2502_standard/install/cone_detector:/home/yzksy/install/chair_detector:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LC_NAME', 'ja_JP.UTF-8'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('LC_MEASUREMENT', 'ja_JP.UTF-8'), ('LC_IDENTIFICATION', 'ja_JP.UTF-8'), ('QT_IM_MODULE', 'ibus'), ('PWD', '/home/yzksy/mirs2502_standard/src/cone_detector/build/cone_detector'), ('LC_ALL', 'en_US.UTF-8'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/yzksy/mirs2502_standard/install/mirs_msgs/local/lib/python3.10/dist-packages:/home/yzksy/mirs2502_standard/build/coverage_planner:/home/yzksy/mirs2502_standard/install/coverage_planner/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('LC_NUMERIC', 'ja_JP.UTF-8'), ('LC_PAPER', 'ja_JP.UTF-8'), ('COLCON', '1'), ('VTE_VERSION', '6800'), ('CMAKE_PREFIX_PATH', '/home/yzksy/mirs2502_standard/install/sllidar_ros2:/home/yzksy/mirs2502_standard/install/mirs:/home/yzksy/mirs2502_standard/install/mirs_msgs:/home/yzksy/mirs2502_standard/install/micro_ros_agent:/home/yzksy/mirs2502_standard/install/groot:/home/yzksy/mirs2502_standard/install/cone_detector:/home/yzksy/install/chair_detector:/home/yzksy/mirs2502_standard/install/coverage_planner:/opt/ros/humble')]), 'shell': False}
+[3.301060] (cone_detector) StdoutLine: {'line': b'[ 40%] \x1b[32mBuilding CXX object CMakeFiles/cone_color_detector_node.dir/src/cone_color_detector_node.cpp.o\x1b[0m\n'}
+[3.301244] (cone_detector) StdoutLine: {'line': b'[ 40%] \x1b[32mBuilding CXX object CMakeFiles/cone_area_node.dir/src/cone_area_node.cpp.o\x1b[0m\n'}
+[3.301308] (cone_detector) StdoutLine: {'line': b'[ 40%] \x1b[32mBuilding CXX object CMakeFiles/cone_cluster_node.dir/src/cone_cluster_node.cpp.o\x1b[0m\n'}
+[3.301363] (cone_detector) StdoutLine: {'line': b'[ 50%] \x1b[32mBuilding CXX object CMakeFiles/scan_to_pointcloud.dir/src/scan_to_pointcloud.cpp.o\x1b[0m\n'}
+[3.301419] (cone_detector) StdoutLine: {'line': b'[ 50%] \x1b[32mBuilding CXX object CMakeFiles/cone_fusion_node.dir/src/cone_fusion_node.cpp.o\x1b[0m\n'}
+[3.304435] (-) TimerEvent: {}
+[3.404674] (-) TimerEvent: {}
+[3.504981] (-) TimerEvent: {}
+[3.605270] (-) TimerEvent: {}
+[3.705536] (-) TimerEvent: {}
+[3.805834] (-) TimerEvent: {}
+[3.906130] (-) TimerEvent: {}
+[4.006442] (-) TimerEvent: {}
+[4.106773] (-) TimerEvent: {}
+[4.207094] (-) TimerEvent: {}
+[4.307476] (-) TimerEvent: {}
+[4.407801] (-) TimerEvent: {}
+[4.508174] (-) TimerEvent: {}
+[4.608465] (-) TimerEvent: {}
+[4.708770] (-) TimerEvent: {}
+[4.809089] (-) TimerEvent: {}
+[4.909455] (-) TimerEvent: {}
+[5.009820] (-) TimerEvent: {}
+[5.110182] (-) TimerEvent: {}
+[5.210511] (-) TimerEvent: {}
+[5.310875] (-) TimerEvent: {}
+[5.411227] (-) TimerEvent: {}
+[5.511593] (-) TimerEvent: {}
+[5.611907] (-) TimerEvent: {}
+[5.712247] (-) TimerEvent: {}
+[5.812628] (-) TimerEvent: {}
+[5.913008] (-) TimerEvent: {}
+[6.013357] (-) TimerEvent: {}
+[6.113711] (-) TimerEvent: {}
+[6.214051] (-) TimerEvent: {}
+[6.314392] (-) TimerEvent: {}
+[6.414772] (-) TimerEvent: {}
+[6.515198] (-) TimerEvent: {}
+[6.615550] (-) TimerEvent: {}
+[6.715888] (-) TimerEvent: {}
+[6.816241] (-) TimerEvent: {}
+[6.916614] (-) TimerEvent: {}
+[7.016961] (-) TimerEvent: {}
+[7.117326] (-) TimerEvent: {}
+[7.217659] (-) TimerEvent: {}
+[7.318009] (-) TimerEvent: {}
+[7.418335] (-) TimerEvent: {}
+[7.518648] (-) TimerEvent: {}
+[7.618947] (-) TimerEvent: {}
+[7.719302] (-) TimerEvent: {}
+[7.819647] (-) TimerEvent: {}
+[7.920005] (-) TimerEvent: {}
+[8.020317] (-) TimerEvent: {}
+[8.120652] (-) TimerEvent: {}
+[8.221001] (-) TimerEvent: {}
+[8.321323] (-) TimerEvent: {}
+[8.421656] (-) TimerEvent: {}
+[8.522007] (-) TimerEvent: {}
+[8.622343] (-) TimerEvent: {}
+[8.722690] (-) TimerEvent: {}
+[8.823042] (-) TimerEvent: {}
+[8.923393] (-) TimerEvent: {}
+[9.023729] (-) TimerEvent: {}
+[9.124080] (-) TimerEvent: {}
+[9.224437] (-) TimerEvent: {}
+[9.324771] (-) TimerEvent: {}
+[9.425104] (-) TimerEvent: {}
+[9.525416] (-) TimerEvent: {}
+[9.625730] (-) TimerEvent: {}
+[9.726071] (-) TimerEvent: {}
+[9.826387] (-) TimerEvent: {}
+[9.926713] (-) TimerEvent: {}
+[10.027045] (-) TimerEvent: {}
+[10.127362] (-) TimerEvent: {}
+[10.227698] (-) TimerEvent: {}
+[10.328061] (-) TimerEvent: {}
+[10.428394] (-) TimerEvent: {}
+[10.528737] (-) TimerEvent: {}
+[10.629044] (-) TimerEvent: {}
+[10.729358] (-) TimerEvent: {}
+[10.829728] (-) TimerEvent: {}
+[10.930081] (-) TimerEvent: {}
+[11.030403] (-) TimerEvent: {}
+[11.130775] (-) TimerEvent: {}
+[11.231129] (-) TimerEvent: {}
+[11.331449] (-) TimerEvent: {}
+[11.431815] (-) TimerEvent: {}
+[11.532185] (-) TimerEvent: {}
+[11.632509] (-) TimerEvent: {}
+[11.733003] (-) TimerEvent: {}
+[11.833382] (-) TimerEvent: {}
+[11.933700] (-) TimerEvent: {}
+[12.034151] (-) TimerEvent: {}
+[12.134582] (-) TimerEvent: {}
+[12.179707] (cone_detector) StdoutLine: {'line': b'[ 60%] \x1b[32m\x1b[1mLinking CXX executable scan_to_pointcloud\x1b[0m\n'}
+[12.234740] (-) TimerEvent: {}
+[12.335110] (-) TimerEvent: {}
+[12.435537] (-) TimerEvent: {}
+[12.536063] (-) TimerEvent: {}
+[12.636486] (-) TimerEvent: {}
+[12.736892] (-) TimerEvent: {}
+[12.837231] (-) TimerEvent: {}
+[12.880541] (cone_detector) StdoutLine: {'line': b'[ 60%] Built target scan_to_pointcloud\n'}
+[12.937427] (-) TimerEvent: {}
+[13.037897] (-) TimerEvent: {}
+[13.138386] (-) TimerEvent: {}
+[13.238771] (-) TimerEvent: {}
+[13.339106] (-) TimerEvent: {}
+[13.439458] (-) TimerEvent: {}
+[13.539866] (-) TimerEvent: {}
+[13.640173] (-) TimerEvent: {}
+[13.740474] (-) TimerEvent: {}
+[13.840864] (-) TimerEvent: {}
+[13.941259] (-) TimerEvent: {}
+[14.041582] (-) TimerEvent: {}
+[14.141883] (-) TimerEvent: {}
+[14.197894] (cone_detector) StdoutLine: {'line': b'[ 70%] \x1b[32m\x1b[1mLinking CXX executable cone_cluster_node\x1b[0m\n'}
+[14.242039] (-) TimerEvent: {}
+[14.342335] (-) TimerEvent: {}
+[14.442644] (-) TimerEvent: {}
+[14.542958] (-) TimerEvent: {}
+[14.643279] (-) TimerEvent: {}
+[14.643500] (cone_detector) StdoutLine: {'line': b'[ 80%] \x1b[32m\x1b[1mLinking CXX executable cone_color_detector_node\x1b[0m\n'}
+[14.743403] (-) TimerEvent: {}
+[14.843910] (-) TimerEvent: {}
+[14.944324] (-) TimerEvent: {}
+[15.044687] (-) TimerEvent: {}
+[15.145134] (-) TimerEvent: {}
+[15.245586] (-) TimerEvent: {}
+[15.345898] (-) TimerEvent: {}
+[15.446345] (-) TimerEvent: {}
+[15.546891] (-) TimerEvent: {}
+[15.647261] (-) TimerEvent: {}
+[15.747626] (-) TimerEvent: {}
+[15.847947] (-) TimerEvent: {}
+[15.913567] (cone_detector) StdoutLine: {'line': b'[ 90%] \x1b[32m\x1b[1mLinking CXX executable cone_area_node\x1b[0m\n'}
+[15.948075] (-) TimerEvent: {}
+[16.048490] (-) TimerEvent: {}
+[16.122087] (cone_detector) StdoutLine: {'line': b'[ 90%] Built target cone_cluster_node\n'}
+[16.148611] (-) TimerEvent: {}
+[16.179745] (cone_detector) StdoutLine: {'line': b'[ 90%] Built target cone_color_detector_node\n'}
+[16.248837] (-) TimerEvent: {}
+[16.349203] (-) TimerEvent: {}
+[16.355637] (cone_detector) StdoutLine: {'line': b'[100%] \x1b[32m\x1b[1mLinking CXX executable cone_fusion_node\x1b[0m\n'}
+[16.449351] (-) TimerEvent: {}
+[16.549750] (-) TimerEvent: {}
+[16.650231] (-) TimerEvent: {}
+[16.750677] (-) TimerEvent: {}
+[16.851103] (-) TimerEvent: {}
+[16.951562] (-) TimerEvent: {}
+[17.051979] (-) TimerEvent: {}
+[17.152448] (-) TimerEvent: {}
+[17.252861] (-) TimerEvent: {}
+[17.353205] (-) TimerEvent: {}
+[17.453691] (-) TimerEvent: {}
+[17.543724] (cone_detector) StdoutLine: {'line': b'[100%] Built target cone_area_node\n'}
+[17.553831] (-) TimerEvent: {}
+[17.632041] (cone_detector) StdoutLine: {'line': b'[100%] Built target cone_fusion_node\n'}
+[17.642831] (cone_detector) CommandEnded: {'returncode': 0}
+[17.643431] (cone_detector) JobProgress: {'identifier': 'cone_detector', 'progress': 'install'}
+[17.652107] (cone_detector) Command: {'cmd': ['/usr/bin/cmake', '--install', '/home/yzksy/mirs2502_standard/src/cone_detector/build/cone_detector'], 'cwd': '/home/yzksy/mirs2502_standard/src/cone_detector/build/cone_detector', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('LANGUAGE', 'ja:en_US:en'), ('USER', 'yzksy'), ('LC_TIME', 'ja_JP.UTF-8'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/yzksy/mirs2502_standard/install/mirs_msgs/lib:/home/yzksy/mirs2502_standard/install/micro_ros_agent/lib:/home/yzksy/mirs2502_standard/install/groot/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/yzksy'), ('OLDPWD', '/home/yzksy/mirs2502_standard/src'), ('DESKTOP_SESSION', 'ubuntu'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('LC_MONETARY', 'ja_JP.UTF-8'), ('SYSTEMD_EXEC_PID', '1230'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('COLCON_PREFIX_PATH', '/home/yzksy/mirs2502_standard/install:/home/yzksy/install'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'yzksy'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'yzksy'), ('TERM', 'xterm-256color'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/home/yzksy/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/yzksypc:@/tmp/.ICE-unix/1195,unix/yzksypc:/tmp/.ICE-unix/1195'), ('PAPERSIZE', 'a4'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'ja_JP.UTF-8'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/c388f24b_f9bb_4e46_92e2_a4054bdb1d51'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('LANG', 'ja_JP.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('LC_TELEPHONE', 'ja_JP.UTF-8'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.TVIJH3'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.111'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('ROS_DOMAIN_ID', '90'), ('AMENT_PREFIX_PATH', '/home/yzksy/mirs2502_standard/install/sllidar_ros2:/home/yzksy/mirs2502_standard/install/mirs:/home/yzksy/mirs2502_standard/install/mirs_msgs:/home/yzksy/mirs2502_standard/install/micro_ros_agent:/home/yzksy/mirs2502_standard/install/groot:/home/yzksy/mirs2502_standard/install/coverage_planner:/home/yzksy/mirs2502_standard/install/cone_detector:/home/yzksy/install/chair_detector:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LC_NAME', 'ja_JP.UTF-8'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('LC_MEASUREMENT', 'ja_JP.UTF-8'), ('LC_IDENTIFICATION', 'ja_JP.UTF-8'), ('QT_IM_MODULE', 'ibus'), ('PWD', '/home/yzksy/mirs2502_standard/src/cone_detector/build/cone_detector'), ('LC_ALL', 'en_US.UTF-8'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/yzksy/mirs2502_standard/install/mirs_msgs/local/lib/python3.10/dist-packages:/home/yzksy/mirs2502_standard/build/coverage_planner:/home/yzksy/mirs2502_standard/install/coverage_planner/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('LC_NUMERIC', 'ja_JP.UTF-8'), ('LC_PAPER', 'ja_JP.UTF-8'), ('COLCON', '1'), ('VTE_VERSION', '6800'), ('CMAKE_PREFIX_PATH', '/home/yzksy/mirs2502_standard/install/sllidar_ros2:/home/yzksy/mirs2502_standard/install/mirs:/home/yzksy/mirs2502_standard/install/mirs_msgs:/home/yzksy/mirs2502_standard/install/micro_ros_agent:/home/yzksy/mirs2502_standard/install/groot:/home/yzksy/mirs2502_standard/install/cone_detector:/home/yzksy/install/chair_detector:/home/yzksy/mirs2502_standard/install/coverage_planner:/opt/ros/humble')]), 'shell': False}
+[17.653882] (-) TimerEvent: {}
+[17.659126] (cone_detector) StdoutLine: {'line': b'-- Install configuration: ""\n'}
+[17.659288] (cone_detector) StdoutLine: {'line': b'-- Installing: /home/yzksy/mirs2502_standard/src/cone_detector/install/cone_detector/lib/cone_detector/cone_color_detector_node\n'}
+[17.662810] (cone_detector) StdoutLine: {'line': b'-- Set runtime path of "/home/yzksy/mirs2502_standard/src/cone_detector/install/cone_detector/lib/cone_detector/cone_color_detector_node" to ""\n'}
+[17.662888] (cone_detector) StdoutLine: {'line': b'-- Installing: /home/yzksy/mirs2502_standard/src/cone_detector/install/cone_detector/lib/cone_detector/cone_fusion_node\n'}
+[17.667836] (cone_detector) StdoutLine: {'line': b'-- Set runtime path of "/home/yzksy/mirs2502_standard/src/cone_detector/install/cone_detector/lib/cone_detector/cone_fusion_node" to ""\n'}
+[17.667949] (cone_detector) StdoutLine: {'line': b'-- Installing: /home/yzksy/mirs2502_standard/src/cone_detector/install/cone_detector/lib/cone_detector/scan_to_pointcloud\n'}
+[17.671228] (cone_detector) StdoutLine: {'line': b'-- Set runtime path of "/home/yzksy/mirs2502_standard/src/cone_detector/install/cone_detector/lib/cone_detector/scan_to_pointcloud" to ""\n'}
+[17.671361] (cone_detector) StdoutLine: {'line': b'-- Installing: /home/yzksy/mirs2502_standard/src/cone_detector/install/cone_detector/lib/cone_detector/cone_cluster_node\n'}
+[17.674651] (cone_detector) StdoutLine: {'line': b'-- Set runtime path of "/home/yzksy/mirs2502_standard/src/cone_detector/install/cone_detector/lib/cone_detector/cone_cluster_node" to ""\n'}
+[17.674760] (cone_detector) StdoutLine: {'line': b'-- Installing: /home/yzksy/mirs2502_standard/src/cone_detector/install/cone_detector/lib/cone_detector/cone_area_node\n'}
+[17.678576] (cone_detector) StdoutLine: {'line': b'-- Set runtime path of "/home/yzksy/mirs2502_standard/src/cone_detector/install/cone_detector/lib/cone_detector/cone_area_node" to ""\n'}
+[17.678713] (cone_detector) StdoutLine: {'line': b'-- Up-to-date: /home/yzksy/mirs2502_standard/src/cone_detector/install/cone_detector/lib/cone_detector/cone_color_detector_node\n'}
+[17.678895] (cone_detector) StdoutLine: {'line': b'-- Installing: /home/yzksy/mirs2502_standard/src/cone_detector/install/cone_detector/lib/cone_detector/landmark_localizer.py\n'}
+[17.679662] (cone_detector) StdoutLine: {'line': b'-- Installing: /home/yzksy/mirs2502_standard/src/cone_detector/install/cone_detector/share/cone_detector//launch\n'}
+[17.679801] (cone_detector) StdoutLine: {'line': b'-- Installing: /home/yzksy/mirs2502_standard/src/cone_detector/install/cone_detector/share/cone_detector//launch/debug_all.launch.py\n'}
+[17.680314] (cone_detector) StdoutLine: {'line': b'-- Installing: /home/yzksy/mirs2502_standard/src/cone_detector/install/cone_detector/share/cone_detector//launch/chair_detection.launch.py\n'}
+[17.680833] (cone_detector) StdoutLine: {'line': b'-- Installing: /home/yzksy/mirs2502_standard/src/cone_detector/install/cone_detector/share/cone_detector//launch/lidar_only.launch.py\n'}
+[17.681241] (cone_detector) StdoutLine: {'line': b'-- Installing: /home/yzksy/mirs2502_standard/src/cone_detector/install/cone_detector/share/cone_detector//launch/cone_detection.launch.py\n'}
+[17.681767] (cone_detector) StdoutLine: {'line': b'-- Installing: /home/yzksy/mirs2502_standard/src/cone_detector/install/cone_detector/share/ament_index/resource_index/package_run_dependencies/cone_detector\n'}
+[17.681949] (cone_detector) StdoutLine: {'line': b'-- Installing: /home/yzksy/mirs2502_standard/src/cone_detector/install/cone_detector/share/ament_index/resource_index/parent_prefix_path/cone_detector\n'}
+[17.682140] (cone_detector) StdoutLine: {'line': b'-- Installing: /home/yzksy/mirs2502_standard/src/cone_detector/install/cone_detector/share/cone_detector/environment/ament_prefix_path.sh\n'}
+[17.682251] (cone_detector) StdoutLine: {'line': b'-- Installing: /home/yzksy/mirs2502_standard/src/cone_detector/install/cone_detector/share/cone_detector/environment/ament_prefix_path.dsv\n'}
+[17.682374] (cone_detector) StdoutLine: {'line': b'-- Installing: /home/yzksy/mirs2502_standard/src/cone_detector/install/cone_detector/share/cone_detector/environment/path.sh\n'}
+[17.682506] (cone_detector) StdoutLine: {'line': b'-- Installing: /home/yzksy/mirs2502_standard/src/cone_detector/install/cone_detector/share/cone_detector/environment/path.dsv\n'}
+[17.682631] (cone_detector) StdoutLine: {'line': b'-- Installing: /home/yzksy/mirs2502_standard/src/cone_detector/install/cone_detector/share/cone_detector/local_setup.bash\n'}
+[17.682755] (cone_detector) StdoutLine: {'line': b'-- Installing: /home/yzksy/mirs2502_standard/src/cone_detector/install/cone_detector/share/cone_detector/local_setup.sh\n'}
+[17.682884] (cone_detector) StdoutLine: {'line': b'-- Installing: /home/yzksy/mirs2502_standard/src/cone_detector/install/cone_detector/share/cone_detector/local_setup.zsh\n'}
+[17.683013] (cone_detector) StdoutLine: {'line': b'-- Installing: /home/yzksy/mirs2502_standard/src/cone_detector/install/cone_detector/share/cone_detector/local_setup.dsv\n'}
+[17.683138] (cone_detector) StdoutLine: {'line': b'-- Installing: /home/yzksy/mirs2502_standard/src/cone_detector/install/cone_detector/share/cone_detector/package.dsv\n'}
+[17.683302] (cone_detector) StdoutLine: {'line': b'-- Installing: /home/yzksy/mirs2502_standard/src/cone_detector/install/cone_detector/share/ament_index/resource_index/packages/cone_detector\n'}
+[17.683459] (cone_detector) StdoutLine: {'line': b'-- Installing: /home/yzksy/mirs2502_standard/src/cone_detector/install/cone_detector/share/cone_detector/cmake/cone_detectorConfig.cmake\n'}
+[17.683568] (cone_detector) StdoutLine: {'line': b'-- Installing: /home/yzksy/mirs2502_standard/src/cone_detector/install/cone_detector/share/cone_detector/cmake/cone_detectorConfig-version.cmake\n'}
+[17.683686] (cone_detector) StdoutLine: {'line': b'-- Installing: /home/yzksy/mirs2502_standard/src/cone_detector/install/cone_detector/share/cone_detector/package.xml\n'}
+[17.685610] (cone_detector) CommandEnded: {'returncode': 0}
+[17.708510] (cone_detector) JobEnded: {'identifier': 'cone_detector', 'rc': 0}
+[17.709007] (-) EventReactorShutdown: {}

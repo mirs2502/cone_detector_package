@@ -7,6 +7,7 @@
 #include "tf2_ros/buffer.h"
 #include "tf2_ros/transform_listener.h"
 #include "tf2_sensor_msgs/tf2_sensor_msgs.hpp" // (LaserScanのTF変換に使う)
+#include "tf2/exceptions.hpp"
 
 // unique_ptr, shared_ptr を使うために必要
 #include <memory>
