@@ -29,6 +29,7 @@ find_package(cv_bridge REQUIRED)
 find_package(image_transport REQUIRED)
 find_package(image_geometry REQUIRED)
 find_package(message_filters REQUIRED)
+find_package(std_srvs REQUIRED)
 
 
 include_directories(
@@ -85,6 +86,7 @@ ament_target_dependencies(cone_area_node
   tf2_ros
   tf2_geometry_msgs
   tf2_sensor_msgs
+  std_srvs
 )
 
 add_executable(cone_color_detector_node src/cone_color_detector_node.cpp)
