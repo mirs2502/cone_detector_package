@@ -21,7 +21,7 @@ class LandmarkLocalizer(Node):
         # ConeFusionNode が出力する「確定コーン」を購読
         self.sub_cones = self.create_subscription(
             PointCloud2,
-            '/cone_centers', 
+            '/confirmed_cones', 
             self.callback_cones,
             10
         )

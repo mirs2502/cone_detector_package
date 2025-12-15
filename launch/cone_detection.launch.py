@@ -10,7 +10,7 @@ def generate_launch_description():
         package='v4l2_camera',
         executable='v4l2_camera_node',
         name='v4l2_camera',
-        parameters=[{'video_device': '/dev/video3', 'frame_id': 'camera'}],
+        parameters=[{'video_device': '/dev/video2', 'frame_id': 'camera'}],
         remappings=[
             ('camera/image_raw', '/image_raw'),
             ('camera/camera_info', '/camera_info')
@@ -28,12 +28,12 @@ def generate_launch_description():
     
     # 静的TF（座標変換）の設定 (base_link -> camera_link)
     # arguments の値はご自身のロボットの測定値に変更してください
-    static_tf_camera = Node(
-        package='tf2_ros', 
-        executable='static_transform_publisher',
-        # [X, Y, Z, Yaw, Pitch, Roll] (base_link -> camera_link)
-        arguments = ['0.15', '0.0', '0.3', '-1.5707', '0', '-1.5707', 'base_link', 'camera']
-    )
+    #static_tf_camera = Node(
+    #    package='tf2_ros', 
+    #    executable='static_transform_publisher',
+    #    # [X, Y, Z, Yaw, Pitch, Roll] (base_link -> camera_link)
+    #    arguments = ['0.15', '0.0', '0.3', '-1.5707', '0', '-1.5707', 'base_link', 'camera']
+    #)
     
     # Scan -> PointCloud ノード (既存)
     scan_to_pointcloud = Node(
@@ -80,7 +80,7 @@ def generate_launch_description():
     ld = LaunchDescription()
     ld.add_action(camera_node)
     #ld.add_action(static_tf_lidar)
-    ld.add_action(static_tf_camera)
+    #ld.add_action(static_tf_camera)
     ld.add_action(scan_to_pointcloud)
     ld.add_action(cone_cluster) # 追加
     ld.add_action(cone_area)    # 追加

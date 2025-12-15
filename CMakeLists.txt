@@ -32,9 +32,14 @@ find_package(message_filters REQUIRED)
 
 
 include_directories(
+  include
+  /opt/ros/humble/include/tf2
   ${PCL_INCLUDE_DIRS}
   ${EIGEN3_INCLUDE_DIR}
   ${OpenCV_INCLUDE_DIRS}
+  ${tf2_INCLUDE_DIRS}
+  ${tf2_ros_INCLUDE_DIRS}
+  ${tf2_geometry_msgs_INCLUDE_DIRS}
 )
 
 
@@ -45,6 +50,7 @@ ament_target_dependencies(scan_to_pointcloud
  rclcpp 
  sensor_msgs 
  laser_geometry
+ tf2
  tf2_ros
  tf2_sensor_msgs
  )
