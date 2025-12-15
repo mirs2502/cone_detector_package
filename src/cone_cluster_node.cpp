@@ -34,6 +34,9 @@ public:
     this->declare_parameter("circle_inlier_ratio",
                             0.7); // 70% (クラスタの何%が円に適合すべきか)
 
+    // ★ 距離フィルター用パラメータ ★
+    this->declare_parameter("max_detection_distance", 3.0); // 3m以上は無視
+
     update_parameters();
 
     param_callback_handle_ = this->add_on_set_parameters_callback(std::bind(
@@ -70,6 +73,8 @@ private:
         circle_max_radius_ = param.as_double();
       if (param.get_name() == "circle_inlier_ratio")
         circle_inlier_ratio_ = param.as_double();
+      if (param.get_name() == "max_detection_distance")
+        max_detection_distance_ = param.as_double();
     }
     return result;
   }
@@ -82,6 +87,7 @@ private:
     this->get_parameter("circle_min_radius", circle_min_radius_);
     this->get_parameter("circle_max_radius", circle_max_radius_);
     this->get_parameter("circle_inlier_ratio", circle_inlier_ratio_);
+    this->get_parameter("max_detection_distance", max_detection_distance_);
   }
 
   void pointCloudCallback(const sensor_msgs::msg::PointCloud2::SharedPtr msg) {
@@ -165,6 +171,13 @@ private:
       center.x /= cluster.indices.size();
       center.y /= cluster.indices.size();
       center.z /= cluster.indices.size();
+
+      // ★ 距離フィルター: 遠すぎるものは無視 ★
+      double distance = std::sqrt(center.x * center.x + center.y * center.y);
+      if (distance > max_detection_distance_) {
+        continue; // 遠くの誤検出（壁など）をスキップ
+      }
+
       cluster_centers_cloud->points.push_back(center);
     }
 
@@ -190,6 +203,7 @@ private:
   double circle_min_radius_;
   double circle_max_radius_;
   double circle_inlier_ratio_;
+  double max_detection_distance_;
 };
 
 int main(int argc, char **argv) {
