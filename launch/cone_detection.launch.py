@@ -73,7 +73,8 @@ def generate_launch_description():
         output='screen',
         parameters=[{
             'fusion_pixel_threshold': 300.0,
-            'min_confirmation_count': 1,
+            'min_confirmation_count': 2,
+            'distance_tolerance': 5.0,
         }],
     )
 
