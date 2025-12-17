@@ -1,3 +1,4 @@
+#include <memory>
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 #include <pcl_conversions/pcl_conversions.h>
@@ -10,10 +11,10 @@
 
 // TF2 (座標変換) ライブラリ
 #include <geometry_msgs/msg/point_stamped.hpp>
-#include <tf2/exceptions.hpp>
+#include <tf2/convert.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
-#include <tf2_ros/buffer.h>
-#include <tf2_ros/transform_listener.h>
+#include <tf2_ros/buffer.hpp>
+#include <tf2_ros/transform_listener.hpp>
 
 // メッセージ同期 ライブラリ (今回は使わない シンプル実装)
 // #include <message_filters/subscriber.h>
@@ -29,9 +30,10 @@ struct TrackedCandidate {
 
 class ConeFusionNode : public rclcpp::Node {
 public:
-  ConeFusionNode()
-      : Node("cone_fusion_node"), tf_buffer_(this->get_clock()),
-        tf_listener_(tf_buffer_) {
+  ConeFusionNode() : Node("cone_fusion_node") {
+    tf_buffer_ = std::make_shared<tf2_ros::Buffer>(this->get_clock());
+    tf_listener_ =
+        std::make_shared<tf2_ros::TransformListener>(*tf_buffer_, this);
     // フュージョン閾値パラメータ（ピクセル距離）
     this->declare_parameter("fusion_pixel_threshold", 100.0);
     this->get_parameter("fusion_pixel_threshold", fusion_pixel_threshold_);
@@ -172,33 +174,24 @@ private:
     RCLCPP_INFO(this->get_logger(), "Lidar points: %zu, Color regions: %zu",
                 lidar_cloud.points.size(), color_cloud.points.size());
 
-    // TF取得: LiDARの座標系 (lidar_msg->header.frame_id) から
-    //         カメラの座標系 (camera_frame_id_) への変換
-    geometry_msgs::msg::TransformStamped tf_stamped;
-    try {
-      tf_stamped = tf_buffer_.lookupTransform(
-          camera_frame_id_,           // 変換先のフレーム (例: "camera_link")
-          lidar_msg->header.frame_id, // 変換元のフレーム (例: "laser")
-          tf2::TimePointZero,         // 最新のTFを取得
-          std::chrono::milliseconds(100)); // 待機時間
-    } catch (tf2::TransformException &ex) {
-      RCLCPP_WARN(this->get_logger(), "Could not transform %s to %s: %s",
-                  lidar_msg->header.frame_id.c_str(), camera_frame_id_.c_str(),
-                  ex.what());
-      return;
-    }
-
-    // LiDARの全候補点をループ処理
+    // 全てのLiDAR点を走査
     for (const auto &lidar_point : lidar_cloud.points) {
-      // 1. 3D座標をLiDAR座標系からカメラ座標系に変換
       geometry_msgs::msg::PointStamped point_in_lidar;
       point_in_lidar.header = lidar_msg->header;
       point_in_lidar.point.x = lidar_point.x;
       point_in_lidar.point.y = lidar_point.y;
       point_in_lidar.point.z = lidar_point.z;
 
+      // TF取得: LiDARの座標系 (lidar_msg->header.frame_id) から
+      //         カメラの座標系 (camera_frame_id_) への変換
       geometry_msgs::msg::PointStamped point_in_camera;
-      tf2::doTransform(point_in_lidar, point_in_camera, tf_stamped);
+      try {
+        point_in_camera =
+            tf_buffer_->transform(point_in_lidar, camera_frame_id_);
+      } catch (const tf2::TransformException &ex) {
+        RCLCPP_WARN(this->get_logger(), "Transform failure: %s", ex.what());
+        continue;
+      }
 
       // 2. 3D座標（カメラ系）を2Dピクセル座標に投影
       cv::Point3d pt_3d(point_in_camera.point.x, point_in_camera.point.y,
@@ -325,9 +318,9 @@ private:
     }
   }
 
-  // TF用
-  tf2_ros::Buffer tf_buffer_;
-  tf2_ros::TransformListener tf_listener_;
+  // TF member variables
+  std::shared_ptr<tf2_ros::Buffer> tf_buffer_;
+  std::shared_ptr<tf2_ros::TransformListener> tf_listener_;
 
   // カメラモデル用
   image_geometry::PinholeCameraModel cam_model_;

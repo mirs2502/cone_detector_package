@@ -1,3 +1,4 @@
+#include <ctime> // struct tm の完全な定義が必要
 #include <geometry_msgs/msg/point32.hpp>
 #include <geometry_msgs/msg/polygon_stamped.hpp>
 #include <pcl/common/geometry.h>
@@ -10,17 +11,18 @@
 #include <std_srvs/srv/empty.hpp>
 
 // TF2 (座標変換) 用ヘッダ
-#include <tf2/exceptions.hpp>
+#include <tf2/convert.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
-#include <tf2_ros/buffer.h>
-#include <tf2_ros/transform_listener.h>
+#include <tf2_ros/buffer.hpp>
+#include <tf2_ros/transform_listener.hpp>
 #include <tf2_sensor_msgs/tf2_sensor_msgs.hpp> // PointCloud2の変換用
 
 class ConeAreaNode : public rclcpp::Node {
 public:
-  ConeAreaNode()
-      : Node("cone_area_node"), tf_buffer_(this->get_clock()),
-        tf_listener_(tf_buffer_) {
+  ConeAreaNode() : Node("cone_area_node") {
+    tf_buffer_ = std::make_shared<tf2_ros::Buffer>(this->get_clock());
+    tf_listener_ =
+        std::make_shared<tf2_ros::TransformListener>(*tf_buffer_, this);
 
     // パラメータ: 蓄積する固定座標系の名前 (通常は "odom" か "map")
     // SLAMを使っているなら "map", オドメトリのみなら "odom" 推奨
@@ -61,13 +63,10 @@ private:
     try {
       // 最新のTFではなく、点群が計測された時刻(msg->header.stamp)のTFを使うのが重要
       // タイムアウト時間を少し設ける
-      geometry_msgs::msg::TransformStamped tf_stamped =
-          tf_buffer_.lookupTransform(target_frame_, msg->header.frame_id,
-                                     msg->header.stamp,
-                                     rclcpp::Duration::from_seconds(0.1));
-
-      tf2::doTransform(*msg, transformed_msg, tf_stamped);
-    } catch (tf2::TransformException &ex) {
+      // Use buffer.transform directly for pointcloud2
+      transformed_msg =
+          tf_buffer_->transform(*msg, target_frame_, tf2::durationFromSec(0.1));
+    } catch (const tf2::TransformException &ex) {
       RCLCPP_WARN(this->get_logger(), "TF Transform failure: %s", ex.what());
       return;
     }
@@ -164,9 +163,9 @@ private:
   rclcpp::Service<std_srvs::srv::Empty>::SharedPtr reset_service_;
 
   // TF関連
-  tf2_ros::Buffer tf_buffer_;
-  tf2_ros::TransformListener tf_listener_;
   std::string target_frame_;
+  std::shared_ptr<tf2_ros::Buffer> tf_buffer_;
+  std::shared_ptr<tf2_ros::TransformListener> tf_listener_;
 
   // 蓄積用データ
   pcl::PointCloud<pcl::PointXYZ>::Ptr accumulated_cones_;

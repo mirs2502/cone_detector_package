@@ -21,6 +21,8 @@ find_package(visualization_msgs REQUIRED)  # 追加
 find_package(laser_geometry REQUIRED)
 find_package(tf2 REQUIRED)  # tf2を追加
 find_package(tf2_ros REQUIRED)  # tf2_rosも追加
+message(STATUS "tf2_ros_INCLUDE_DIRS: ${tf2_ros_INCLUDE_DIRS}")
+message(STATUS "tf2_ros_LIBRARIES: ${tf2_ros_LIBRARIES}")
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED) # 追加 (PolygonStampedのため)
 find_package(tf2_sensor_msgs REQUIRED)
@@ -32,16 +34,7 @@ find_package(message_filters REQUIRED)
 find_package(std_srvs REQUIRED)
 
 
-include_directories(
-  include
-  /opt/ros/humble/include/tf2
-  ${PCL_INCLUDE_DIRS}
-  ${EIGEN3_INCLUDE_DIR}
-  ${OpenCV_INCLUDE_DIRS}
-  ${tf2_INCLUDE_DIRS}
-  ${tf2_ros_INCLUDE_DIRS}
-  ${tf2_geometry_msgs_INCLUDE_DIRS}
-)
+
 
 
 
@@ -54,6 +47,7 @@ ament_target_dependencies(scan_to_pointcloud
  tf2
  tf2_ros
  tf2_sensor_msgs
+ tf2_geometry_msgs
  )
 
 
@@ -104,19 +98,19 @@ target_link_libraries(cone_color_detector_node
 )
 
 add_executable(cone_fusion_node src/cone_fusion_node.cpp)
+target_link_libraries(cone_fusion_node
+  ${PCL_LIBRARIES}
+  ${tf2_ros_LIBRARIES}
+)
 ament_target_dependencies(cone_fusion_node
   rclcpp
   sensor_msgs
+  geometry_msgs
   pcl_conversions
   tf2_geometry_msgs
   tf2
   tf2_ros
   image_geometry
-  # message_filters (今回は使わなかった)
-)
-target_link_libraries(cone_fusion_node
-  ${PCL_LIBRARIES}
-  ${tf2_ros_LIBRARIES}
 )
 
 # (install(TARGETS ...) の中に追記)
