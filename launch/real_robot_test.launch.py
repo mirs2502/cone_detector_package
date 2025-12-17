@@ -24,16 +24,18 @@ def generate_launch_description():
     )
 
     # 3. landmark_localizer (Note: renamed in CMakeLists.txt)
-    landmark_localizer_node = Node(
-        package='cone_detector',
-        executable='landmark_localizer',
-        name='landmark_localizer',
-        output='screen'
-    )
+    # ★odom-only: landmark_localizerを無効化
+    # landmark_localizer_node = Node(
+    #     package='cone_detector',
+    #     executable='landmark_localizer',
+    #     name='landmark_localizer',
+    #     output='screen'
+    # )
 
     ld = LaunchDescription()
     ld.add_action(mirs_launch)
     ld.add_action(cone_detection_launch)
-    ld.add_action(landmark_localizer_node)
+    # ★odom-only: landmark_localizerを起動しない
+    # ld.add_action(landmark_localizer_node)
 
     return ld

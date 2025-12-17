@@ -78,13 +78,14 @@ def generate_launch_description():
     )
     
     # --- 7. 【新規】ランドマーク自己位置推定 (landmark_localizer) ---
-    landmark_localizer = Node(
-        package='cone_detector', # setup.pyがあるパッケージ名
-        executable='landmark_localizer.py',
-        name='landmark_localizer',
-        output='screen',
-        parameters=[{'min_shared_landmarks': 1}]
-    )
+    # ★odom-only: landmark_localizerを無効化
+    # landmark_localizer = Node(
+    #     package='cone_detector', # setup.pyがあるパッケージ名
+    #     executable='landmark_localizer.py',
+    #     name='landmark_localizer',
+    #     output='screen',
+    #     parameters=[{'min_shared_landmarks': 1}]
+    # )
 
     return LaunchDescription([
         DeclareLaunchArgument('use_sim_time', default_value='false'),
@@ -96,5 +97,6 @@ def generate_launch_description():
         cone_accumulator,
         cone_area,
         zigzag_generator,
-        landmark_localizer
+        # ★odom-only: landmark_localizerを起動しない
+        # landmark_localizer
     ])
