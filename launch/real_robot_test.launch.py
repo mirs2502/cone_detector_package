@@ -31,9 +31,19 @@ def generate_launch_description():
         output='screen'
     )
 
+    rviz_config_file = os.path.join(cone_detector_pkg, 'rviz', 'ekf_test.rviz')
+    rviz_node = Node(
+        package='rviz2',
+        executable='rviz2',
+        name='rviz2',
+        arguments=['-d', rviz_config_file],
+        output='screen'
+    )
+
     ld = LaunchDescription()
     ld.add_action(mirs_launch)
     ld.add_action(cone_detection_launch)
     ld.add_action(landmark_localizer_node)
+    ld.add_action(rviz_node)
 
     return ld
