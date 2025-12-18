@@ -13,8 +13,17 @@
 #include <geometry_msgs/msg/point_stamped.hpp>
 #include <tf2/convert.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
-#include <tf2_ros/buffer.h>
-#include <tf2_ros/transform_listener.h>
+#if __has_include(<tf2_ros/buffer.h>)
+  #include <tf2_ros/buffer.h>
+#else
+  #include <tf2_ros/buffer.hpp>
+#endif
+
+#if __has_include(<tf2_ros/transform_listener.h>)
+  #include <tf2_ros/transform_listener.h>
+#else
+  #include <tf2_ros/transform_listener.hpp>
+#endif
 
 // メッセージ同期 ライブラリ (今回は使わない シンプル実装)
 // #include <message_filters/subscriber.h>
