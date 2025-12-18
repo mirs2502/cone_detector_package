@@ -6,6 +6,7 @@ if(POLICY CMP0074)
   cmake_policy(SET CMP0074 NEW)
 endif()
 
+include_directories(include)
 set(PCL_DIR "/usr/lib/cmake/pcl")  # 適切なPCLのCMakeディレクトリを指定
 
 # 必要なROS2のパッケージを見つける

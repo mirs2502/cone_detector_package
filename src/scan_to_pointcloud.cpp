@@ -6,8 +6,8 @@
 // TFリスナーに必要なヘッダ
 #include "tf2/convert.h"
 #include "tf2_geometry_msgs/tf2_geometry_msgs.hpp"
-#include "tf2_ros/buffer.hpp"
-#include "tf2_ros/transform_listener.hpp"
+#include <tf2_ros/buffer.h>
+#include <tf2_ros/transform_listener.h>
 #include "tf2_sensor_msgs/tf2_sensor_msgs.hpp" // (LaserScanのTF変換に使う)
 
 // unique_ptr, shared_ptr を使うために必要
