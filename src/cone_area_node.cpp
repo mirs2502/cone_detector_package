@@ -31,7 +31,7 @@ public:
   ConeAreaNode() : Node("cone_area_node") {
     tf_buffer_ = std::make_shared<tf2_ros::Buffer>(this->get_clock());
     tf_listener_ =
-        std::make_shared<tf2_ros::TransformListener>(*tf_buffer_, this);
+        std::make_shared<tf2_ros::TransformListener>(*tf_buffer_);
 
     // パラメータ: 蓄積する固定座標系の名前 (通常は "odom" か "map")
     // SLAMを使っているなら "map", オドメトリのみなら "odom" 推奨

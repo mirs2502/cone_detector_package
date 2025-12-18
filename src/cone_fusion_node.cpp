@@ -42,7 +42,7 @@ public:
   ConeFusionNode() : Node("cone_fusion_node") {
     tf_buffer_ = std::make_shared<tf2_ros::Buffer>(this->get_clock());
     tf_listener_ =
-        std::make_shared<tf2_ros::TransformListener>(*tf_buffer_, this);
+        std::make_shared<tf2_ros::TransformListener>(*tf_buffer_);
     // フュージョン閾値パラメータ（ピクセル距離）
     this->declare_parameter("fusion_pixel_threshold", 100.0);
     this->get_parameter("fusion_pixel_threshold", fusion_pixel_threshold_);

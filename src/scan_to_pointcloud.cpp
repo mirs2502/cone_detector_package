@@ -31,7 +31,7 @@ public:
         tf_buffer_(std::make_unique<tf2_ros::Buffer>(this->get_clock())),
         // 2. Buffer を渡して Listener を初期化
         tf_listener_(
-            std::make_shared<tf2_ros::TransformListener>(*tf_buffer_, this)) {
+            std::make_shared<tf2_ros::TransformListener>(*tf_buffer_)) {
     scan_subscriber_ = this->create_subscription<sensor_msgs::msg::LaserScan>(
         "/scan", 10,
         std::bind(&ScanToPointCloudNode::scanCallback, this,
