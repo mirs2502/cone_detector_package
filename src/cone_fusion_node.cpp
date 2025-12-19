@@ -44,17 +44,19 @@ public:
     tf_listener_ =
         std::make_shared<tf2_ros::TransformListener>(*tf_buffer_);
     // フュージョン閾値パラメータ（ピクセル距離）
-    this->declare_parameter("fusion_pixel_threshold", 100.0);
+    // 緩和: 100.0 -> 300.0 (ピクセル単位の許容誤差を大きくする)
+    this->declare_parameter("fusion_pixel_threshold", 300.0);
     this->get_parameter("fusion_pixel_threshold", fusion_pixel_threshold_);
     RCLCPP_INFO(this->get_logger(), "Fusion pixel threshold: %.1f",
                 fusion_pixel_threshold_);
 
     // 連続検出カウンタのパラメータ
+    // 緩和: 3 -> 1 (1回でも検出したら即確定にする、テスト用)
     this->declare_parameter("min_confirmation_count",
-                            3); // 確定に必要な連続検出回数
+                            1); // 確定に必要な連続検出回数
     this->declare_parameter("tracking_distance",
-                            0.3);                     // 同一候補とみなす距離[m]
-    this->declare_parameter("tracking_timeout", 1.0); // 追跡タイムアウト[秒]
+                            0.5);                     // 同一候補とみなす距離[m] (0.3 -> 0.5に緩和)
+    this->declare_parameter("tracking_timeout", 5.0); // 追跡タイムアウト[秒] (1.0 -> 5.0に緩和)
     this->get_parameter("min_confirmation_count", min_confirmation_count_);
     this->get_parameter("tracking_distance", tracking_distance_);
     this->get_parameter("tracking_timeout", tracking_timeout_);
@@ -64,8 +66,9 @@ public:
 
     // 距離整合性チェックのパラメータ
     this->declare_parameter("cone_real_size", 0.2); // コーンの実サイズ[m]（幅）
+    // 緩和: 0.5 -> 2.0 (サイズチェックをほぼ無効化するレベルに緩める)
     this->declare_parameter("distance_tolerance",
-                            0.5); // 距離許容誤差の割合（50%）
+                            2.0); // 距離許容誤差の割合（200%）
     this->get_parameter("cone_real_size", cone_real_size_);
     this->get_parameter("distance_tolerance", distance_tolerance_);
     RCLCPP_INFO(this->get_logger(),

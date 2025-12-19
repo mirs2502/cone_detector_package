@@ -90,12 +90,10 @@ ament_target_dependencies(cone_color_detector_node
   sensor_msgs
   cv_bridge
   pcl_conversions
-  image_transport
 )
 target_link_libraries(cone_color_detector_node
   ${OpenCV_LIBRARIES}
   ${PCL_LIBRARIES}
-  ${image_transport_LIBRARIES}
 )
 
 add_executable(cone_fusion_node src/cone_fusion_node.cpp)

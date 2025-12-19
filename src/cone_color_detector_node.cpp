@@ -1,5 +1,6 @@
 #include <cv_bridge/cv_bridge.h>
-#include <image_transport/image_transport.hpp> // マスク画像配信用に追加
+#include <cv_bridge/cv_bridge.h>
+// #include <image_transport/image_transport.hpp> // 削除
 #include <opencv2/opencv.hpp>
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
@@ -14,13 +15,19 @@ class ConeColorDetectorNode : public rclcpp::Node {
 public:
   ConeColorDetectorNode() : Node("cone_color_detector_node") {
     // パラメータを宣言 (H: 0-179, S: 0-255, V: 0-255)
-    // (デフォルト値はオレンジ色の例)
+    // 赤色コーン用 (Hueが0付近と180付近にまたがるため、2つの範囲が必要だが、
+    // ここでは簡易的に0-10と160-180の広い範囲をカバーするように設定、または2つのフィルタを組み合わせる必要がある)
+    // 今回はとりあえずオレンジ〜赤を広めに取る設定に変更
+    // パラメータを宣言 (H: 0-179, S: 0-255, V: 0-255)
+    // 赤〜オレンジ色用 (H: 0-30)
     this->declare_parameter("h_min", 0);
-    this->declare_parameter("s_min", 130);
-    this->declare_parameter("v_min", 50);
-    this->declare_parameter("h_max", 25);
+    this->declare_parameter("h_max", 180); // 0-180: 全色相を許可して、まずは「何か」が映るか確認 (テスト用)
+    
+    this->declare_parameter("s_min", 30); // 100 -> 30: 白っぽくても検出
     this->declare_parameter("s_max", 255);
-    this->declare_parameter("v_max", 230);
+    
+    this->declare_parameter("v_min", 30); // 50 -> 30: 暗くても検出
+    this->declare_parameter("v_max", 255);
 
     // 宣言したパラメータを変数に読み込む
     this->get_parameter("h_min", h_min_);
@@ -52,7 +59,8 @@ public:
         "/color_regions", 10);
 
     // ★調整用★ マスク画像（白黒の画像）をパブリッシュするPublisher
-    mask_publisher_ = image_transport::create_publisher(this, "/color_mask");
+    // image_transportだと圧縮トピック等が自動生成されてややこしいので、標準Publisherに変更
+    mask_publisher_ = this->create_publisher<sensor_msgs::msg::Image>("/color_mask", 10);
   }
 
 private:
@@ -110,7 +118,7 @@ private:
     sensor_msgs::msg::Image::SharedPtr mask_msg =
         cv_bridge::CvImage(std_msgs::msg::Header(), "mono8", mask).toImageMsg();
     mask_msg->header = msg->header;
-    mask_publisher_.publish(mask_msg);
+    mask_publisher_->publish(*mask_msg); // ポインタの参照外しが必要
 
     // --- (これ以降は重心計算なので変更なし) ---
     std::vector<std::vector<cv::Point>> contours;
@@ -149,7 +157,7 @@ private:
   rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr image_subscriber_;
   rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr
       regions_publisher_;
-  image_transport::Publisher mask_publisher_; // ★調整用★
+  rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr mask_publisher_; // ★調整用★ 標準Publisherに変更
   rclcpp::node_interfaces::OnSetParametersCallbackHandle::SharedPtr
       param_callback_handle_;
 

@@ -151,9 +151,9 @@ private:
                 "Reset accumulated cones. Cleared %zu cones.", previous_count);
   }
 
-  // 重複チェック: 既存のコーンから一定距離(例: 0.3m)以内なら同一とみなす
+  // 重複チェック: 既存のコーンから一定距離(例: 2.0m)以内なら同一とみなす
   bool isNewCone(const pcl::PointXYZ &new_pt) {
-    const double threshold_dist = 1.0;
+    const double threshold_dist = 2.0; // 1.5 -> 2.0にさらに緩和
     for (const auto &existing_pt : accumulated_cones_->points) {
       float dist = pcl::geometry::distance(new_pt, existing_pt);
       if (dist < threshold_dist) {
