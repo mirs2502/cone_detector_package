@@ -1,0 +1,6 @@
+<library path="cone_costmap_layer">
+  <class type="cone_detector::ConeCostmapLayer" 
+         base_class_type="nav2_costmap_2d::Layer">
+    <description>コーン周辺のコストを低く（膨張半径を小さく）設定するカスタムレイヤー</description>
+  </class>
+</library>

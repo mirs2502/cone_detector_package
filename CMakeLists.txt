@@ -33,6 +33,8 @@ find_package(image_transport REQUIRED)
 find_package(image_geometry REQUIRED)
 find_package(message_filters REQUIRED)
 find_package(std_srvs REQUIRED)
+find_package(nav2_costmap_2d REQUIRED)
+find_package(pluginlib REQUIRED)
 
 
 
@@ -143,6 +145,53 @@ install(DIRECTORY
   launch
   rviz
   DESTINATION share/${PROJECT_NAME}/
+)
+
+# --- Costmap Layer Plugin ---
+# include directory
+include_directories(include)
+
+add_library(cone_costmap_layer SHARED
+  src/cone_costmap_layer.cpp
+)
+target_include_directories(cone_costmap_layer PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+target_link_libraries(cone_costmap_layer
+  ${PCL_LIBRARIES}
+)
+ament_target_dependencies(cone_costmap_layer
+  rclcpp
+  sensor_msgs
+  geometry_msgs
+  nav2_costmap_2d
+  pluginlib
+  pcl_conversions
+)
+
+# Export plugin
+pluginlib_export_plugin_description_file(nav2_costmap_2d costmap_plugins.xml)
+
+install(TARGETS cone_costmap_layer
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
+
+install(DIRECTORY include/
+  DESTINATION include
+)
+
+ament_export_include_directories(include)
+ament_export_libraries(cone_costmap_layer)
+ament_export_dependencies(
+  rclcpp
+  sensor_msgs
+  geometry_msgs
+  nav2_costmap_2d
+  pluginlib
+  pcl_conversions
 )
 
 ament_package()
