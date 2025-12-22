@@ -19,22 +19,30 @@ public:
     // ここでは簡易的に0-10と160-180の広い範囲をカバーするように設定、または2つのフィルタを組み合わせる必要がある)
     // 今回はとりあえずオレンジ〜赤を広めに取る設定に変更
     // パラメータを宣言 (H: 0-179, S: 0-255, V: 0-255)
-    // 赤〜オレンジ色用 (H: 0-30)
-    this->declare_parameter("h_min", 0);
-    this->declare_parameter("h_max", 180); // 0-180: 全色相を許可して、まずは「何か」が映るか確認 (テスト用)
+    // 赤色コーン用 (Hueが0付近と180付近にまたがるため、2つの範囲を設定)
     
-    this->declare_parameter("s_min", 30); // 100 -> 30: 白っぽくても検出
+    // 範囲1: オレンジ〜赤 (0-15)
+    this->declare_parameter("h_min", 0);
+    this->declare_parameter("h_max", 15);
+    
+    // 範囲2: 紫〜赤 (165-180)
+    this->declare_parameter("h_min_2", 165);
+    this->declare_parameter("h_max_2", 180);
+
+    this->declare_parameter("s_min", 100); // 30 -> 100: 白っぽい色を除外
     this->declare_parameter("s_max", 255);
     
-    this->declare_parameter("v_min", 30); // 50 -> 30: 暗くても検出
+    this->declare_parameter("v_min", 50); // 30 -> 50: 暗すぎる色を除外
     this->declare_parameter("v_max", 255);
 
     // 宣言したパラメータを変数に読み込む
     this->get_parameter("h_min", h_min_);
-    this->get_parameter("s_min", s_min_);
-    this->get_parameter("v_min", v_min_);
     this->get_parameter("h_max", h_max_);
+    this->get_parameter("h_min_2", h_min_2_);
+    this->get_parameter("h_max_2", h_max_2_);
+    this->get_parameter("s_min", s_min_);
     this->get_parameter("s_max", s_max_);
+    this->get_parameter("v_min", v_min_);
     this->get_parameter("v_max", v_max_);
 
     // 面積フィルタのパラメータ
@@ -72,14 +80,18 @@ private:
     for (const auto &param : parameters) {
       if (param.get_name() == "h_min")
         h_min_ = param.as_int();
-      if (param.get_name() == "s_min")
-        s_min_ = param.as_int();
-      if (param.get_name() == "v_min")
-        v_min_ = param.as_int();
       if (param.get_name() == "h_max")
         h_max_ = param.as_int();
+      if (param.get_name() == "h_min_2")
+        h_min_2_ = param.as_int();
+      if (param.get_name() == "h_max_2")
+        h_max_2_ = param.as_int();
+      if (param.get_name() == "s_min")
+        s_min_ = param.as_int();
       if (param.get_name() == "s_max")
         s_max_ = param.as_int();
+      if (param.get_name() == "v_min")
+        v_min_ = param.as_int();
       if (param.get_name() == "v_max")
         v_max_ = param.as_int();
       if (param.get_name() == "min_area")
@@ -102,12 +114,21 @@ private:
     cv::Mat hsv_image;
     cv::cvtColor(cv_ptr->image, hsv_image, cv::COLOR_BGR2HSV);
 
-    // パラメータからHSVの範囲をcv::Scalarとして作成
-    cv::Scalar hsv_min = cv::Scalar(h_min_, s_min_, v_min_);
-    cv::Scalar hsv_max = cv::Scalar(h_max_, s_max_, v_max_);
+    // 範囲1のマスク作成
+    cv::Scalar hsv_min_1 = cv::Scalar(h_min_, s_min_, v_min_);
+    cv::Scalar hsv_max_1 = cv::Scalar(h_max_, s_max_, v_max_);
+    cv::Mat mask1;
+    cv::inRange(hsv_image, hsv_min_1, hsv_max_1, mask1);
 
+    // 範囲2のマスク作成
+    cv::Scalar hsv_min_2 = cv::Scalar(h_min_2_, s_min_, v_min_);
+    cv::Scalar hsv_max_2 = cv::Scalar(h_max_2_, s_max_, v_max_);
+    cv::Mat mask2;
+    cv::inRange(hsv_image, hsv_min_2, hsv_max_2, mask2);
+
+    // 2つのマスクを結合
     cv::Mat mask;
-    cv::inRange(hsv_image, hsv_min, hsv_max, mask);
+    cv::bitwise_or(mask1, mask2, mask);
 
     // （オプション）ノイズ除去
     cv::erode(mask, mask, cv::Mat(), cv::Point(-1, -1), 2);
@@ -163,6 +184,7 @@ private:
 
   // HSVしきい値の変数
   int h_min_, s_min_, v_min_, h_max_, s_max_, v_max_;
+  int h_min_2_, h_max_2_;
   // 面積フィルタ
   int min_area_, max_area_;
 };

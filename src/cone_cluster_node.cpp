@@ -35,7 +35,7 @@ public:
                             0.7); // 70% (クラスタの何%が円に適合すべきか)
 
     // ★ 距離フィルター用パラメータ ★
-    this->declare_parameter("max_detection_distance", 3.0); // 3m以上は無視
+    this->declare_parameter("max_detection_distance", 5.0); // 3m -> 5mに拡大
 
     update_parameters();
 

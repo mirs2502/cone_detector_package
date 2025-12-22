@@ -60,6 +60,11 @@ public:
     // 記憶用クラウドの初期化
     accumulated_cones_.reset(new pcl::PointCloud<pcl::PointXYZ>);
 
+    // 定期パブリッシュ用タイマー (1Hz)
+    timer_ = this->create_wall_timer(
+        std::chrono::seconds(1),
+        std::bind(&ConeAreaNode::timerCallback, this));
+
     RCLCPP_INFO(this->get_logger(), "ConeAreaNode started. Call '/reset_cones' "
                                     "service to clear accumulated cones.");
   }
@@ -133,11 +138,24 @@ private:
 
     polygon_publisher_->publish(polygon_msg);
 
+    // 最新のポリゴンを保存して定期パブリッシュを有効化
+    last_polygon_msg_ = polygon_msg;
+    has_polygon_ = true;
+
     if (updated) {
       RCLCPP_INFO(this->get_logger(),
                   "Area updated. Total cones: %zu, Polygon points: %zu",
                   accumulated_cones_->points.size(),
                   polygon_msg.polygon.points.size());
+    }
+  }
+
+  // 定期的に最後のポリゴンをパブリッシュするコールバック
+  void timerCallback() {
+    if (has_polygon_) {
+      // タイムスタンプのみ更新
+      last_polygon_msg_.header.stamp = this->now();
+      polygon_publisher_->publish(last_polygon_msg_);
     }
   }
 
@@ -147,6 +165,7 @@ private:
       std::shared_ptr<std_srvs::srv::Empty::Response> /*response*/) {
     size_t previous_count = accumulated_cones_->points.size();
     accumulated_cones_->points.clear();
+    has_polygon_ = false; // ポリゴン情報もクリア
     RCLCPP_INFO(this->get_logger(),
                 "Reset accumulated cones. Cleared %zu cones.", previous_count);
   }
@@ -170,6 +189,7 @@ private:
   rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr
       accumulated_publisher_;
   rclcpp::Service<std_srvs::srv::Empty>::SharedPtr reset_service_;
+  rclcpp::TimerBase::SharedPtr timer_; // 定期実行用タイマー
 
   // TF関連
   std::string target_frame_;
@@ -178,6 +198,10 @@ private:
 
   // 蓄積用データ
   pcl::PointCloud<pcl::PointXYZ>::Ptr accumulated_cones_;
+  
+  // 定期パブリッシュ用
+  geometry_msgs::msg::PolygonStamped last_polygon_msg_;
+  bool has_polygon_ = false;
 };
 
 int main(int argc, char **argv) {
