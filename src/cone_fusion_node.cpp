@@ -175,6 +175,20 @@ private:
       return;
     }
 
+    // タイムスタンプ同期チェック
+    rclcpp::Time lidar_time(lidar_msg->header.stamp);
+    rclcpp::Time color_time(latest_color_regions_->header.stamp);
+    double time_diff = std::abs((lidar_time - color_time).seconds());
+
+    if (time_diff > 0.5) {
+      RCLCPP_WARN_THROTTLE(
+          this->get_logger(), *this->get_clock(), 1000,
+          "Data too old! Time diff: %.3f sec. Skipping fusion to prevent "
+          "misalignment.",
+          time_diff);
+      return;
+    }
+
     // LiDARの点群 (PCL形式)
     pcl::PointCloud<pcl::PointXYZ> lidar_cloud;
     pcl::fromROSMsg(*lidar_msg, lidar_cloud);
@@ -260,11 +274,15 @@ private:
                         distance_ratio);
             break;
           } else {
-            RCLCPP_INFO(this->get_logger(),
+            RCLCPP_DEBUG(this->get_logger(),
                         "Distance mismatch: ratio=%.2f outside [%.2f, %.2f]",
                         distance_ratio, 1.0 - distance_tolerance_,
                         1.0 + distance_tolerance_);
           }
+        } else {
+          RCLCPP_DEBUG(this->get_logger(),
+                       "Pixel distance too large: %.1f > %.1f", pixel_distance,
+                       fusion_pixel_threshold_);
         }
       }
 

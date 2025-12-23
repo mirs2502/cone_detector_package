@@ -8,7 +8,7 @@
 #include <pcl_conversions/pcl_conversions.h>
 #include <rclcpp/rclcpp.hpp>
 #include <sensor_msgs/msg/point_cloud2.hpp>
-#include <std_srvs/srv/empty.hpp>
+#include <std_srvs/srv/trigger.hpp>
 
 // TF2 (座標変換) 用ヘッダ
 #include <tf2/convert.h>
@@ -52,7 +52,7 @@ public:
             "/accumulated_cones", 10);
 
     // リセットサービスの作成
-    reset_service_ = this->create_service<std_srvs::srv::Empty>(
+    reset_service_ = this->create_service<std_srvs::srv::Trigger>(
         "/reset_cones",
         std::bind(&ConeAreaNode::resetCallback, this, std::placeholders::_1,
                   std::placeholders::_2));
@@ -161,13 +161,28 @@ private:
 
   // リセットサービスのコールバック
   void resetCallback(
-      const std::shared_ptr<std_srvs::srv::Empty::Request> /*request*/,
-      std::shared_ptr<std_srvs::srv::Empty::Response> /*response*/) {
+      const std::shared_ptr<std_srvs::srv::Trigger::Request> /*request*/, // Changed request type
+      std::shared_ptr<std_srvs::srv::Trigger::Response> response) { // Changed response type
     size_t previous_count = accumulated_cones_->points.size();
     accumulated_cones_->points.clear();
     has_polygon_ = false; // ポリゴン情報もクリア
-    RCLCPP_INFO(this->get_logger(),
-                "Reset accumulated cones. Cleared %zu cones.", previous_count);
+    
+    // 空のポリゴンを一度パブリッシュして、Rviz上の表示を消す
+    geometry_msgs::msg::PolygonStamped empty_polygon;
+    empty_polygon.header.frame_id = target_frame_;
+    empty_polygon.header.stamp = this->now();
+    polygon_publisher_->publish(empty_polygon);
+    
+    // 定期パブリッシュ用のデータも空にする
+    last_polygon_msg_ = empty_polygon;
+
+    std::stringstream ss;
+    ss << "Reset accumulated cones. Cleared " << previous_count << " cones.";
+    
+    response->success = true;
+    response->message = ss.str();
+    
+    RCLCPP_INFO(this->get_logger(), "%s", ss.str().c_str());
   }
 
   // 重複チェック: 既存のコーンから一定距離(例: 2.0m)以内なら同一とみなす
@@ -188,7 +203,7 @@ private:
       polygon_publisher_;
   rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr
       accumulated_publisher_;
-  rclcpp::Service<std_srvs::srv::Empty>::SharedPtr reset_service_;
+  rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr reset_service_;
   rclcpp::TimerBase::SharedPtr timer_; // 定期実行用タイマー
 
   // TF関連
