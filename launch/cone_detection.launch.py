@@ -10,7 +10,11 @@ def generate_launch_description():
         package='v4l2_camera',
         executable='v4l2_camera_node',
         name='v4l2_camera',
-        parameters=[{'video_device': '/dev/video2', 'frame_id': 'camera'}],
+        parameters=[{
+            'video_device': '/dev/video2',
+            'frame_id': 'camera',
+            'camera_info_url': 'file:///home/yzksy/mirs2502_standard/src/cone_detector/config/camera.yaml'
+        }],
         remappings=[
             ('camera/image_raw', '/image_raw'),
             ('camera/camera_info', '/camera_info')
