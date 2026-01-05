@@ -94,6 +94,12 @@ private:
 
     // 3. 記憶済みのコーンと比較して、新しいものだけ追加 (Accumulation)
     for (const auto &new_pt : current_cloud->points) {
+      // 4つ以上蓄積されていたら、これ以上追加しない
+      if (accumulated_cones_->points.size() >= 4) {
+        // 既に4つあるのでスキップ (ログを出しすぎないように制御しても良いが、ここでは単純にbreak)
+        break; 
+      }
+
       if (isNewCone(new_pt)) {
         accumulated_cones_->points.push_back(new_pt);
         updated = true;
