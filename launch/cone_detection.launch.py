@@ -76,9 +76,9 @@ def generate_launch_description():
         name='cone_fusion_node',
         output='screen',
         parameters=[{
-            'fusion_pixel_threshold': 300.0,
-            'min_confirmation_count': 2,
-            'distance_tolerance': 5.0,
+            'fusion_pixel_threshold': 100.0,  # 300→100に戻す
+            'min_confirmation_count': 3,      # 2→3に戻す
+            'distance_tolerance': 0.5,        # 5.0→0.5に戻す
         }],
     )
 
