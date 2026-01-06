@@ -171,6 +171,12 @@ private:
     sensor_msgs::msg::PointCloud2 output_msg;
     pcl::toROSMsg(centers_cloud, output_msg);
     output_msg.header = msg->header;
+    
+    // 診断用ログ: 検出数を出力
+    if (!centers_cloud.points.empty()) {
+        RCLCPP_INFO(this->get_logger(), "Publishing %zu color regions.", centers_cloud.points.size());
+    }
+    
     regions_publisher_->publish(output_msg);
   }
 
