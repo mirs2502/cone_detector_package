@@ -66,9 +66,9 @@ public:
 
     // 距離整合性チェックのパラメータ
     this->declare_parameter("cone_real_size", 0.2); // コーンの実サイズ[m]（幅）
-    // 緩和: 0.5 -> 2.0 (サイズチェックをほぼ無効化するレベルに緩める)
+    // 緩和: 0.5 -> 2.0 -> 5.0 -> 3.5 (距離チェックを調整)
     this->declare_parameter("distance_tolerance",
-                            2.0); // 距離許容誤差の割合（200%）
+                            3.5); // 距離許容誤差の割合（350%）
     this->get_parameter("cone_real_size", cone_real_size_);
     this->get_parameter("distance_tolerance", distance_tolerance_);
     RCLCPP_INFO(this->get_logger(),
@@ -228,8 +228,11 @@ private:
         }
     }
 
+    size_t lidar_count = lidar_cloud.points.size();
+    size_t color_count = color_cloud.points.size();
+    RCLCPP_INFO(this->get_logger(), "========== Frame Start ==========");
     RCLCPP_INFO(this->get_logger(), "Lidar points: %zu, Color regions: %zu",
-                lidar_cloud.points.size(), color_cloud.points.size());
+                lidar_count, color_count);
 
     // 全てのLiDAR点を走査
     for (const auto &lidar_point : lidar_cloud.points) {
@@ -270,6 +273,17 @@ private:
           } else {
             RCLCPP_INFO(this->get_logger(), "Point behind camera: z=%f", pt_3d.z);
             continue; // カメラの後ろにある点は無視
+          }
+
+          // 投影されたピクセル座標が画像範囲内かチェック
+          double img_width = cam_model_.fullResolution().width;
+          double img_height = cam_model_.fullResolution().height;
+          if (pt_2d.x < 0 || pt_2d.x >= img_width || 
+              pt_2d.y < 0 || pt_2d.y >= img_height) {
+            RCLCPP_INFO(this->get_logger(), 
+                         "⛔ FILTERED: Point outside image bounds: [%.1f, %.1f] (image: %dx%d)",
+                         pt_2d.x, pt_2d.y, (int)img_width, (int)img_height);
+            continue; // 画像範囲外の点は無視
           }
 
           // 3.
@@ -313,7 +327,7 @@ private:
                             distance_ratio);
                 break;
               } else {
-                RCLCPP_DEBUG(this->get_logger(),
+                RCLCPP_INFO(this->get_logger(),
                             "Distance mismatch: ratio=%.2f outside [%.2f, %.2f]",
                             distance_ratio, 1.0 - distance_tolerance_,
                             1.0 + distance_tolerance_);
@@ -336,6 +350,8 @@ private:
           }
       } // end else (use_lidar_only_)
 
+      // カメラとマッチした点のみを追跡候補として処理
+      if (found_color_match) {
         // 既存の追跡候補に近いかチェック
         bool found_existing = false;
         for (auto &candidate : tracked_candidates_) {
@@ -361,6 +377,7 @@ private:
           new_candidate.last_detection = this->now();
           tracked_candidates_.push_back(new_candidate);
         }
+      }
     } // end for (lidar_points)
 
     // タイムアウトした候補を削除
@@ -382,6 +399,10 @@ private:
     }
 
     // 確定したコーンの点群をパブリッシュ
+    RCLCPP_INFO(this->get_logger(), "Confirmed cones: %zu (Total tracked: %zu)",
+                confirmed_cloud.points.size(), tracked_candidates_.size());
+    RCLCPP_INFO(this->get_logger(), "========== Frame End ==========\n");
+    
     if (!confirmed_cloud.points.empty()) {
       sensor_msgs::msg::PointCloud2 confirmed_msg;
       pcl::toROSMsg(confirmed_cloud, confirmed_msg);
