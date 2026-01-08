@@ -14,15 +14,15 @@
 #include <tf2/convert.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 #if __has_include(<tf2_ros/buffer.h>)
-  #include <tf2_ros/buffer.h>
+#include <tf2_ros/buffer.h>
 #else
-  #include <tf2_ros/buffer.hpp>
+#include <tf2_ros/buffer.hpp>
 #endif
 
 #if __has_include(<tf2_ros/transform_listener.h>)
-  #include <tf2_ros/transform_listener.h>
+#include <tf2_ros/transform_listener.h>
 #else
-  #include <tf2_ros/transform_listener.hpp>
+#include <tf2_ros/transform_listener.hpp>
 #endif
 #include <tf2_sensor_msgs/tf2_sensor_msgs.hpp> // PointCloud2の変換用
 
@@ -30,13 +30,16 @@ class ConeAreaNode : public rclcpp::Node {
 public:
   ConeAreaNode() : Node("cone_area_node") {
     tf_buffer_ = std::make_shared<tf2_ros::Buffer>(this->get_clock());
-    tf_listener_ =
-        std::make_shared<tf2_ros::TransformListener>(*tf_buffer_);
+    tf_listener_ = std::make_shared<tf2_ros::TransformListener>(*tf_buffer_);
 
     // パラメータ: 蓄積する固定座標系の名前 (通常は "odom" か "map")
     // SLAMを使っているなら "map", オドメトリのみなら "odom" 推奨
     this->declare_parameter("target_frame", "odom");
     this->get_parameter("target_frame", target_frame_);
+
+    // パラメータ: コーン同一視の距離閾値
+    this->declare_parameter("threshold_dist", 0.8);
+    this->get_parameter("threshold_dist", threshold_dist_);
 
     centers_subscription_ =
         this->create_subscription<sensor_msgs::msg::PointCloud2>(
@@ -62,8 +65,7 @@ public:
 
     // 定期パブリッシュ用タイマー (1Hz)
     timer_ = this->create_wall_timer(
-        std::chrono::seconds(1),
-        std::bind(&ConeAreaNode::timerCallback, this));
+        std::chrono::seconds(1), std::bind(&ConeAreaNode::timerCallback, this));
 
     RCLCPP_INFO(this->get_logger(), "ConeAreaNode started. Call '/reset_cones' "
                                     "service to clear accumulated cones.");
@@ -96,8 +98,9 @@ private:
     for (const auto &new_pt : current_cloud->points) {
       // 4つ以上蓄積されていたら、これ以上追加しない
       if (accumulated_cones_->points.size() >= 4) {
-        // 既に4つあるのでスキップ (ログを出しすぎないように制御しても良いが、ここでは単純にbreak)
-        break; 
+        // 既に4つあるのでスキップ
+        // (ログを出しすぎないように制御しても良いが、ここでは単純にbreak)
+        break;
       }
 
       if (isNewCone(new_pt)) {
@@ -167,36 +170,38 @@ private:
 
   // リセットサービスのコールバック
   void resetCallback(
-      const std::shared_ptr<std_srvs::srv::Trigger::Request> /*request*/, // Changed request type
-      std::shared_ptr<std_srvs::srv::Trigger::Response> response) { // Changed response type
+      const std::shared_ptr<
+          std_srvs::srv::Trigger::Request> /*request*/, // Changed request type
+      std::shared_ptr<std_srvs::srv::Trigger::Response>
+          response) { // Changed response type
     size_t previous_count = accumulated_cones_->points.size();
     accumulated_cones_->points.clear();
     has_polygon_ = false; // ポリゴン情報もクリア
-    
+
     // 空のポリゴンを一度パブリッシュして、Rviz上の表示を消す
     geometry_msgs::msg::PolygonStamped empty_polygon;
     empty_polygon.header.frame_id = target_frame_;
     empty_polygon.header.stamp = this->now();
     polygon_publisher_->publish(empty_polygon);
-    
+
     // 定期パブリッシュ用のデータも空にする
     last_polygon_msg_ = empty_polygon;
 
     std::stringstream ss;
     ss << "Reset accumulated cones. Cleared " << previous_count << " cones.";
-    
+
     response->success = true;
     response->message = ss.str();
-    
+
     RCLCPP_INFO(this->get_logger(), "%s", ss.str().c_str());
   }
 
   // 重複チェック: 既存のコーンから一定距離(例: 2.0m)以内なら同一とみなす
   bool isNewCone(const pcl::PointXYZ &new_pt) {
-    const double threshold_dist = 2.0; // 1.5 -> 2.0にさらに緩和
+    // const double threshold_dist = 2.0; // パラメータ化しました
     for (const auto &existing_pt : accumulated_cones_->points) {
       float dist = pcl::geometry::distance(new_pt, existing_pt);
-      if (dist < threshold_dist) {
+      if (dist < threshold_dist_) {
         return false; // 既知のコーン
       }
     }
@@ -214,12 +219,13 @@ private:
 
   // TF関連
   std::string target_frame_;
+  double threshold_dist_;
   std::shared_ptr<tf2_ros::Buffer> tf_buffer_;
   std::shared_ptr<tf2_ros::TransformListener> tf_listener_;
 
   // 蓄積用データ
   pcl::PointCloud<pcl::PointXYZ>::Ptr accumulated_cones_;
-  
+
   // 定期パブリッシュ用
   geometry_msgs::msg::PolygonStamped last_polygon_msg_;
   bool has_polygon_ = false;

@@ -4,6 +4,9 @@ from launch import LaunchDescription
 from launch_ros.actions import Node
 
 def generate_launch_description():
+    # パッケージディレクトリを取得
+    cone_detector_pkg = get_package_share_directory('cone_detector')
+    camera_info_path = os.path.join(cone_detector_pkg, 'config', 'camera.yaml')
 
     # カメラ (v4l2_camera) の起動ノード
     camera_node = Node(
@@ -13,7 +16,7 @@ def generate_launch_description():
         parameters=[{
             'video_device': '/dev/video2',
             'frame_id': 'camera',
-            'camera_info_url': 'file:///home/yzksy/mirs2502_standard/src/cone_detector/config/camera.yaml'
+            'camera_info_url': 'file://' + camera_info_path
         }],
         remappings=[
             ('camera/image_raw', '/image_raw'),

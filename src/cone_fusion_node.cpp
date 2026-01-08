@@ -14,21 +14,16 @@
 #include <tf2/convert.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 #if __has_include(<tf2_ros/buffer.h>)
-  #include <tf2_ros/buffer.h>
+#include <tf2_ros/buffer.h>
 #else
-  #include <tf2_ros/buffer.hpp>
+#include <tf2_ros/buffer.hpp>
 #endif
 
 #if __has_include(<tf2_ros/transform_listener.h>)
-  #include <tf2_ros/transform_listener.h>
+#include <tf2_ros/transform_listener.h>
 #else
-  #include <tf2_ros/transform_listener.hpp>
+#include <tf2_ros/transform_listener.hpp>
 #endif
-
-// メッセージ同期 ライブラリ (今回は使わない シンプル実装)
-// #include <message_filters/subscriber.h>
-// #include <message_filters/synchronizer.h>
-// #include <message_filters/sync_policies/approximate_time.h>
 
 // 連続検出追跡用の構造体
 struct TrackedCandidate {
@@ -41,8 +36,7 @@ class ConeFusionNode : public rclcpp::Node {
 public:
   ConeFusionNode() : Node("cone_fusion_node") {
     tf_buffer_ = std::make_shared<tf2_ros::Buffer>(this->get_clock());
-    tf_listener_ =
-        std::make_shared<tf2_ros::TransformListener>(*tf_buffer_);
+    tf_listener_ = std::make_shared<tf2_ros::TransformListener>(*tf_buffer_);
     // フュージョン閾値パラメータ（ピクセル距離）
     // 緩和: 100.0 -> 300.0 (ピクセル単位の許容誤差を大きくする)
     this->declare_parameter("fusion_pixel_threshold", 300.0);
@@ -55,8 +49,9 @@ public:
     this->declare_parameter("min_confirmation_count",
                             1); // 確定に必要な連続検出回数
     this->declare_parameter("tracking_distance",
-                            0.5);                     // 同一候補とみなす距離[m] (0.3 -> 0.5に緩和)
-    this->declare_parameter("tracking_timeout", 5.0); // 追跡タイムアウト[秒] (1.0 -> 5.0に緩和)
+                            0.5); // 同一候補とみなす距離[m] (0.3 -> 0.5に緩和)
+    this->declare_parameter("tracking_timeout",
+                            5.0); // 追跡タイムアウト[秒] (1.0 -> 5.0に緩和)
     this->get_parameter("min_confirmation_count", min_confirmation_count_);
     this->get_parameter("tracking_distance", tracking_distance_);
     this->get_parameter("tracking_timeout", tracking_timeout_);
@@ -79,7 +74,8 @@ public:
     this->declare_parameter("use_lidar_only", false);
     this->get_parameter("use_lidar_only", use_lidar_only_);
     if (use_lidar_only_) {
-        RCLCPP_WARN(this->get_logger(), "!!! LIDAR ONLY MODE ENABLED !!! Camera fusion is skipped.");
+      RCLCPP_WARN(this->get_logger(),
+                  "!!! LIDAR ONLY MODE ENABLED !!! Camera fusion is skipped.");
     }
 
     // カメラ内部パラメータをサブスクライブ (通常のQoSに変更)
@@ -104,7 +100,8 @@ public:
 
     RCLCPP_INFO(this->get_logger(),
                 "Fusion node started. Waiting for CameraInfo...");
-    RCLCPP_INFO(this->get_logger(), "ConeFusionNode initialized successfully."); // 起動確認ログ
+    RCLCPP_INFO(this->get_logger(),
+                "ConeFusionNode initialized successfully."); // 起動確認ログ
   }
 
 private:
@@ -174,41 +171,44 @@ private:
 
   // LiDARの候補点群がメインのトリガー
   void lidarCallback(const sensor_msgs::msg::PointCloud2::SharedPtr lidar_msg) {
-    RCLCPP_DEBUG(this->get_logger(), "lidarCallback triggered"); // コールバック開始ログ
+    RCLCPP_DEBUG(this->get_logger(),
+                 "lidarCallback triggered"); // コールバック開始ログ
     // 必要な情報（カメラモデル、色候補）がまだ来ていないなら何もしない
     // ただし、use_lidar_only_ が true の場合はカメラ情報を待たない
     if (!use_lidar_only_) {
-        if (!cam_model_initialized_ || !latest_color_regions_) {
+      if (!cam_model_initialized_ || !latest_color_regions_) {
         RCLCPP_WARN_THROTTLE(this->get_logger(), *this->get_clock(), 2000,
-                            "Waiting for: %s %s",
-                            cam_model_initialized_ ? "" : "CameraModel",
-                            latest_color_regions_ ? "" : "ColorRegions");
+                             "Waiting for: %s %s",
+                             cam_model_initialized_ ? "" : "CameraModel",
+                             latest_color_regions_ ? "" : "ColorRegions");
         return;
-        }
+      }
     } else {
-        RCLCPP_INFO_ONCE(this->get_logger(), "Running in LIDAR ONLY mode.");
+      RCLCPP_INFO_ONCE(this->get_logger(), "Running in LIDAR ONLY mode.");
     }
 
     // タイムスタンプ同期チェック
     if (!use_lidar_only_) {
-        // ここに来ている時点で latest_color_regions_ は非null (上のチェックで弾かれるため)
-        rclcpp::Time lidar_time(lidar_msg->header.stamp);
-        rclcpp::Time color_time(latest_color_regions_->header.stamp);
-        double time_diff = std::abs((lidar_time - color_time).seconds());
+      // ここに来ている時点で latest_color_regions_ は非null
+      // (上のチェックで弾かれるため)
+      rclcpp::Time lidar_time(lidar_msg->header.stamp);
+      rclcpp::Time color_time(latest_color_regions_->header.stamp);
+      double time_diff = std::abs((lidar_time - color_time).seconds());
 
-        // 診断用ログ: タイムスタンプ差分を表示
-        RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 1000,
-                             "Sync check: LiDAR=%.3f, Color=%.3f, Diff=%.3f (Thresh: 0.5)",
-                             lidar_time.seconds(), color_time.seconds(), time_diff);
+      // 診断用ログ: タイムスタンプ差分を表示
+      RCLCPP_INFO_THROTTLE(
+          this->get_logger(), *this->get_clock(), 1000,
+          "Sync check: LiDAR=%.3f, Color=%.3f, Diff=%.3f (Thresh: 0.5)",
+          lidar_time.seconds(), color_time.seconds(), time_diff);
 
-        if (time_diff > 0.5) {
-          RCLCPP_WARN_THROTTLE(
-              this->get_logger(), *this->get_clock(), 1000,
-              "Data too old! Time diff: %.3f sec. Skipping fusion to prevent "
-              "misalignment.",
-              time_diff);
-          return;
-        }
+      if (time_diff > 0.5) {
+        RCLCPP_WARN_THROTTLE(
+            this->get_logger(), *this->get_clock(), 1000,
+            "Data too old! Time diff: %.3f sec. Skipping fusion to prevent "
+            "misalignment.",
+            time_diff);
+        return;
+      }
     }
 
     // LiDARの点群 (PCL形式)
@@ -218,14 +218,15 @@ private:
     // カメラの色候補 (PCL形式、x,yにピクセル座標が入っている)
     pcl::PointCloud<pcl::PointXYZ> color_cloud;
     if (latest_color_regions_) {
-        pcl::fromROSMsg(*latest_color_regions_, color_cloud);
+      pcl::fromROSMsg(*latest_color_regions_, color_cloud);
     } else {
-        // latest_color_regions_ が null の場合 (LiDAR Onlyモードかつデータ未着の場合など)
-        // color_cloud は空のまま
-        if (!use_lidar_only_) {
-             // ここには来ないはずだが念のためログ
-             RCLCPP_WARN(this->get_logger(), "latest_color_regions_ is null in fusion mode!");
-        }
+      // latest_color_regions_ が null の場合 (LiDAR
+      // Onlyモードかつデータ未着の場合など) color_cloud は空のまま
+      if (!use_lidar_only_) {
+        // ここには来ないはずだが念のためログ
+        RCLCPP_WARN(this->get_logger(),
+                    "latest_color_regions_ is null in fusion mode!");
+      }
     }
 
     size_t lidar_count = lidar_cloud.points.size();
@@ -234,151 +235,172 @@ private:
     RCLCPP_INFO(this->get_logger(), "Lidar points: %zu, Color regions: %zu",
                 lidar_count, color_count);
 
-    // 全てのLiDAR点を走査
-    for (const auto &lidar_point : lidar_cloud.points) {
-      bool found_color_match = false;
+    // -------------------------------------------------------------
+    // ステップ1: バッチ投影と有効なLiDAR点の抽出
+    // -------------------------------------------------------------
 
-      if (use_lidar_only_) {
-          // LiDARのみモード: 無条件でマッチしたとみなす
-          found_color_match = true;
-          // 追跡用にダミーの2D座標などを入れる必要があればここで処理するが、
-          // 現状のロジックでは found_color_match フラグがあれば十分
-      } else {
-          // 通常モード: カメラとのフュージョンを行う
-          geometry_msgs::msg::PointStamped point_in_lidar;
-          point_in_lidar.header = lidar_msg->header;
-          point_in_lidar.point.x = lidar_point.x;
-          point_in_lidar.point.y = lidar_point.y;
-          point_in_lidar.point.z = lidar_point.z;
+    // 1対1マッチングのための準備
+    struct MatchCandidate {
+      size_t lidar_idx;
+      size_t color_idx;
+      double pixel_dist;
+      double distance_ratio;
+    };
+    std::vector<MatchCandidate> candidates;
 
-          // TF取得: LiDARの座標系 (lidar_msg->header.frame_id) から
-          //         カメラの座標系 (camera_frame_id_) への変換
-          geometry_msgs::msg::PointStamped point_in_camera;
-          try {
-            point_in_camera =
-                tf_buffer_->transform(point_in_lidar, camera_frame_id_);
-          } catch (const tf2::TransformException &ex) {
-            RCLCPP_WARN(this->get_logger(), "Transform failure: %s", ex.what());
-            continue;
-          }
+    // 使用済みフラグ
+    std::vector<bool> lidar_used(lidar_count, false);
+    std::vector<bool> color_used(color_count, false);
 
-          // 2. 3D座標（カメラ系）を2Dピクセル座標に投影
-          cv::Point3d pt_3d(point_in_camera.point.x, point_in_camera.point.y,
-                            point_in_camera.point.z);
-          cv::Point2d pt_2d; // 投影されたピクセル座標(x, y)が入る
+    // 有効なLiDAR点のインデックス（投影成功したもの）
+    std::vector<size_t> valid_lidar_indices;
+    // 投影されたピクセル座標のキャッシュ
+    std::vector<cv::Point2d> projected_pixels(lidar_count);
+    // 3D座標のキャッシュ（距離チェック用）
+    std::vector<cv::Point3d> projected_points_3d(lidar_count);
 
-          // カメラの前方にある点（Z>0）だけを投影
-          if (pt_3d.z > 0) {
-            pt_2d = cam_model_.project3dToPixel(pt_3d);
-          } else {
-            RCLCPP_INFO(this->get_logger(), "Point behind camera: z=%f", pt_3d.z);
-            continue; // カメラの後ろにある点は無視
-          }
+    // 今回のフレームでマッチしたLiDAR点のリスト
+    std::vector<pcl::PointXYZ> matched_lidar_points;
 
-          // 投影されたピクセル座標が画像範囲内かチェック
-          double img_width = cam_model_.fullResolution().width;
-          double img_height = cam_model_.fullResolution().height;
-          if (pt_2d.x < 0 || pt_2d.x >= img_width || 
-              pt_2d.y < 0 || pt_2d.y >= img_height) {
-            RCLCPP_INFO(this->get_logger(), 
-                         "⛔ FILTERED: Point outside image bounds: [%.1f, %.1f] (image: %dx%d)",
-                         pt_2d.x, pt_2d.y, (int)img_width, (int)img_height);
-            continue; // 画像範囲外の点は無視
-          }
+    if (use_lidar_only_) {
+      // LiDARのみモード: 全ての点を「マッチした」とみなす
+      for (const auto &pt : lidar_cloud.points) {
+        matched_lidar_points.push_back(pt);
+      }
+    } else {
+      // 全LiDAR点を投影
+      for (size_t i = 0; i < lidar_count; ++i) {
+        const auto &lidar_point = lidar_cloud.points[i];
 
-          // 3.
-          // 投影されたピクセルが、色の候補のバウンディングボックス内にあるかチェック
-          // さらに距離整合性もチェック
-          
-          // LiDARの実測距離（カメラ座標系でのz）
-          double lidar_distance = pt_3d.z;
+        // base_link座標をカメラ相対座標に変換
+        double x_rel = lidar_point.x - 0.15;
+        double y_rel = lidar_point.y - 0.0;
+        double z_rel = lidar_point.z - 0.3;
 
-          // 全ての「色の候補点」をチェック
-          // color_point.x, y = 重心座標, color_point.z = バウンディングボックス半幅
-          for (const auto &color_point : color_cloud.points) {
-            // ピクセル距離を計算
-            double pixel_distance =
-                std::hypot(pt_2d.x - color_point.x, pt_2d.y - color_point.y);
+        // 光学座標系に変換 (Z=前方=depth, X=右, Y=下)
+        cv::Point3d pt_3d;
+        pt_3d.z = x_rel;  // depth
+        pt_3d.x = -y_rel; // right
+        pt_3d.y = -z_rel; // down
 
-            // ステップ1: ピクセル距離チェック（閾値内か）
-            if (pixel_distance < fusion_pixel_threshold_) {
-              // ステップ2: 距離整合性チェック
-              double half_size = color_point.z; // バウンディングボックスの半幅
-              double focal_length = cam_model_.fx();
-              double bbox_size_pixels = half_size * 2.0;
+        // カメラの前方にある点（Z>0）だけを投影
+        if (pt_3d.z <= 0) {
+          RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 1000,
+                               "Point behind camera: z=%f (x_base=%f)", pt_3d.z,
+                               lidar_point.x);
+          continue;
+        }
 
-              // 期待距離 = (実サイズ * 焦点距離) / 画像上のサイズ
-              double expected_distance =
-                  (cone_real_size_ * focal_length) / bbox_size_pixels;
-              double distance_ratio = lidar_distance / expected_distance;
+        cv::Point2d pt_2d = cam_model_.project3dToPixel(pt_3d);
 
-              RCLCPP_INFO(this->get_logger(),
-                          "Checking: pixel_dist=%.1f, LiDAR=%.2fm, Expected=%.2fm, "
-                          "Ratio=%.2f",
-                          pixel_distance, lidar_distance, expected_distance,
-                          distance_ratio);
+        // 画像範囲内チェック
+        double img_width = cam_model_.fullResolution().width;
+        double img_height = cam_model_.fullResolution().height;
+        if (pt_2d.x < 0 || pt_2d.x >= img_width || pt_2d.y < 0 ||
+            pt_2d.y >= img_height) {
+          continue;
+        }
 
-              // 距離整合性チェック
-              if (distance_ratio >= (1.0 - distance_tolerance_) &&
-                  distance_ratio <= (1.0 + distance_tolerance_)) {
-                found_color_match = true;
-                RCLCPP_INFO(this->get_logger(),
-                            "MATCHED: pixel_dist=%.1f, ratio=%.2f", pixel_distance,
-                            distance_ratio);
-                break;
-              } else {
-                RCLCPP_INFO(this->get_logger(),
-                            "Distance mismatch: ratio=%.2f outside [%.2f, %.2f]",
-                            distance_ratio, 1.0 - distance_tolerance_,
-                            1.0 + distance_tolerance_);
-              }
-            } else {
-              RCLCPP_DEBUG(this->get_logger(),
-                          "Pixel distance too large: %.1f > %.1f", pixel_distance,
-                          fusion_pixel_threshold_);
+        // 有効な点として保存
+        valid_lidar_indices.push_back(i);
+        projected_pixels[i] = pt_2d;
+        projected_points_3d[i] = pt_3d;
+
+        RCLCPP_INFO_THROTTLE(
+            this->get_logger(), *this->get_clock(), 500,
+            ">>> LiDAR[%zu] projected: [%.1f, %.1f], cam_z=%.2f", i, pt_2d.x,
+            pt_2d.y, pt_3d.z);
+      }
+
+      // -------------------------------------------------------------
+      // ステップ2: 全ペアのスコア計算
+      // -------------------------------------------------------------
+      for (size_t l_idx : valid_lidar_indices) {
+        for (size_t c_idx = 0; c_idx < color_count; ++c_idx) {
+          const auto &color_point = color_cloud.points[c_idx];
+          const auto &pt_2d = projected_pixels[l_idx];
+          const auto &pt_3d = projected_points_3d[l_idx];
+
+          double pixel_distance =
+              std::hypot(pt_2d.x - color_point.x, pt_2d.y - color_point.y);
+
+          // 閾値チェック
+          if (pixel_distance < fusion_pixel_threshold_) {
+            // 距離整合性チェック
+            double half_size = color_point.z; // バウンディングボックスの半幅
+            double focal_length = cam_model_.fx();
+            double bbox_size_pixels = half_size * 2.0;
+
+            double lidar_distance = pt_3d.z;
+            double expected_distance =
+                (cone_real_size_ * focal_length) / bbox_size_pixels;
+            double distance_ratio = lidar_distance / expected_distance;
+
+            // 緩めのチェック（期待距離に近いか）
+            if (distance_ratio >= (1.0 - distance_tolerance_) &&
+                distance_ratio <= (1.0 + distance_tolerance_)) {
+              // 候補として追加
+              candidates.push_back(
+                  {l_idx, c_idx, pixel_distance, distance_ratio});
             }
           }
-          
-          if (found_color_match) {
-             RCLCPP_INFO( // DEBUG -> INFO に変更して確認しやすくする
-                this->get_logger(),
-                "Match found! 3D(cam): [%.2f, %.2f, %.2f] -> 2D: [%.1f, %.1f]",
-                pt_3d.x, pt_3d.y, pt_3d.z, pt_2d.x, pt_2d.y);
-          } else {
-             // マッチしなかった場合も理由を知りたいのでログ（頻度落とす）
-             RCLCPP_DEBUG(this->get_logger(), "No match for point at 3D(cam): [%.2f, %.2f, %.2f]", pt_3d.x, pt_3d.y, pt_3d.z);
-          }
-      } // end else (use_lidar_only_)
-
-      // カメラとマッチした点のみを追跡候補として処理
-      if (found_color_match) {
-        // 既存の追跡候補に近いかチェック
-        bool found_existing = false;
-        for (auto &candidate : tracked_candidates_) {
-          float dist =
-              std::sqrt(std::pow(candidate.position.x - lidar_point.x, 2) +
-                        std::pow(candidate.position.y - lidar_point.y, 2) +
-                        std::pow(candidate.position.z - lidar_point.z, 2));
-          if (dist < tracking_distance_) {
-            // 既存の候補を更新
-            candidate.detection_count++;
-            candidate.last_detection = this->now();
-            candidate.position = lidar_point; // 位置を更新
-            found_existing = true;
-            break;
-          }
-        }
-
-        if (!found_existing) {
-          // 新しい追跡候補を追加
-          TrackedCandidate new_candidate;
-          new_candidate.position = lidar_point;
-          new_candidate.detection_count = 1;
-          new_candidate.last_detection = this->now();
-          tracked_candidates_.push_back(new_candidate);
         }
       }
-    } // end for (lidar_points)
+
+      // -------------------------------------------------------------
+      // ステップ3: 貪欲法マッチング（距離順）
+      // -------------------------------------------------------------
+      std::sort(candidates.begin(), candidates.end(),
+                [](const MatchCandidate &a, const MatchCandidate &b) {
+                  return a.pixel_dist < b.pixel_dist;
+                });
+
+      for (const auto &cand : candidates) {
+        if (!lidar_used[cand.lidar_idx] && !color_used[cand.color_idx]) {
+          // マッチ成立！
+          lidar_used[cand.lidar_idx] = true;
+          color_used[cand.color_idx] = true;
+
+          matched_lidar_points.push_back(lidar_cloud.points[cand.lidar_idx]);
+
+          RCLCPP_INFO(this->get_logger(),
+                      "MATCHED: LiDAR[%zu]-Color[%zu], dist=%.1f, ratio=%.2f",
+                      cand.lidar_idx, cand.color_idx, cand.pixel_dist,
+                      cand.distance_ratio);
+        }
+      }
+    } // end else (fusion mode)
+
+    // -------------------------------------------------------------
+    // ステップ4: トラッキング情報の更新（ここから先は既存ロジックとほぼ同じ）
+    // -------------------------------------------------------------
+    for (const auto &lidar_point : matched_lidar_points) {
+      // 既存の追跡候補に近いかチェック
+      bool found_existing = false;
+      for (auto &candidate : tracked_candidates_) {
+        float dist =
+            std::sqrt(std::pow(candidate.position.x - lidar_point.x, 2) +
+                      std::pow(candidate.position.y - lidar_point.y, 2) +
+                      std::pow(candidate.position.z - lidar_point.z, 2));
+        if (dist < tracking_distance_) {
+          // 既存の候補を更新
+          candidate.detection_count++;
+          candidate.last_detection = this->now();
+          candidate.position = lidar_point; // 位置を更新
+          found_existing = true;
+          break;
+        }
+      }
+
+      if (!found_existing) {
+        // 新しい追跡候補を追加
+        TrackedCandidate new_candidate;
+        new_candidate.position = lidar_point;
+        new_candidate.detection_count = 1;
+        new_candidate.last_detection = this->now();
+        tracked_candidates_.push_back(new_candidate);
+      }
+    }
 
     // タイムアウトした候補を削除
     rclcpp::Time now = this->now();
@@ -402,7 +424,7 @@ private:
     RCLCPP_INFO(this->get_logger(), "Confirmed cones: %zu (Total tracked: %zu)",
                 confirmed_cloud.points.size(), tracked_candidates_.size());
     RCLCPP_INFO(this->get_logger(), "========== Frame End ==========\n");
-    
+
     if (!confirmed_cloud.points.empty()) {
       sensor_msgs::msg::PointCloud2 confirmed_msg;
       pcl::toROSMsg(confirmed_cloud, confirmed_msg);
