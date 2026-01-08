@@ -66,9 +66,9 @@ public:
 
     // 距離整合性チェックのパラメータ
     this->declare_parameter("cone_real_size", 0.2); // コーンの実サイズ[m]（幅）
-    // 緩和: 0.5 -> 2.0 -> 5.0 -> 3.5 (距離チェックを調整)
+    // 緩和: 0.5 -> 2.0 -> 5.0 (距離チェックを調整)
     this->declare_parameter("distance_tolerance",
-                            3.5); // 距離許容誤差の割合（350%）
+                            5.0); // 距離許容誤差の割合（500%）
     this->get_parameter("cone_real_size", cone_real_size_);
     this->get_parameter("distance_tolerance", distance_tolerance_);
     RCLCPP_INFO(this->get_logger(),
