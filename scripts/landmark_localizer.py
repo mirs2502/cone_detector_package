@@ -22,7 +22,7 @@ class LandmarkLocalizer(Node):
         self.declare_parameter('min_shared_landmarks', 2)  # Yaw計算には最低2点必要
         self.declare_parameter('matching_threshold', 1.0)  # マッチング距離閾値[m]
         self.declare_parameter('target_frame', 'base_link')  # 処理用フレーム（TF変換）
-        self.declare_parameter('output_frame', 'odom')  # 出力ポーズのフレーム
+        self.declare_parameter('output_frame', 'map')  # 出力ポーズのフレーム (Accumulated cones define the Map)
 
         # 状態保持
         self.initial_landmarks = []  # 起動時のコーン配置 (Map) [(x, y), ...]
@@ -39,6 +39,14 @@ class LandmarkLocalizer(Node):
             self.callback_cones,
             10
         )
+        
+        # --- Subscriber for Map Initialization ---
+        self.sub_accumulated = self.create_subscription(
+            PointCloud2,
+            '/accumulated_cones',
+            self.callback_accumulated_cones,
+            10
+        )
 
         # --- Publisher ---
         self.pub_pose = self.create_publisher(
@@ -48,6 +56,25 @@ class LandmarkLocalizer(Node):
         )
 
         self.get_logger().info("LandmarkLocalizer started with Yaw estimation enabled.")
+
+    def callback_accumulated_cones(self, msg):
+        """蓄積されたコーン点群を受信した際のコールバック (初期マップ作成用)"""
+        if self.is_map_initialized:
+            return
+
+        # PointCloud2 から座標を抽出 (accumulated_cones は target_frame (map/odom) で来ると想定されるが、
+        # ここでは単純に座標値を取り出して保存する)
+        
+        # Note: accumulated_cones usually comes in 'odom' or 'map' frame from cone_area_node.
+        # We treat this frame as the definition of our 'Map'.
+        
+        accumulated_points = []
+        for p in point_cloud2.read_points(msg, field_names=("x", "y"), skip_nans=True):
+            accumulated_points.append(np.array([p[0], p[1]]))
+            
+        # 4つ以上溜まったら初期マップとして採用
+        if len(accumulated_points) >= 4:
+             self.save_initial_map(accumulated_points)
 
     def callback_cones(self, msg):
         """コーン点群を受信した際のコールバック"""
@@ -91,7 +118,8 @@ class LandmarkLocalizer(Node):
 
         # --- Phase 1: 初期マップ作成 ---
         if not self.is_map_initialized:
-            self.save_initial_map(current_cones)
+            # Accumulated cones を待つため、ここでは何もしない
+            # self.save_initial_map(current_cones) 
             return
 
         # --- Phase 2: 自己位置推定 ---
