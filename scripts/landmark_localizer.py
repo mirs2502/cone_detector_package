@@ -21,7 +21,7 @@ class LandmarkLocalizer(Node):
         # --- パラメータ設定 ---
         self.declare_parameter('min_shared_landmarks', 2)  # Yaw計算には最低2点必要
         self.declare_parameter('matching_threshold', 1.0)  # マッチング距離閾値[m]
-        self.declare_parameter('target_frame', 'base_link')  # 処理用フレーム（TF変換）
+        self.declare_parameter('target_frame', 'odom')  # 処理用フレーム（confirmed_conesと初期マップの座標系を統一）
         self.declare_parameter('output_frame', 'map')  # 出力ポーズのフレーム (Accumulated cones define the Map)
 
         # 状態保持
@@ -78,40 +78,37 @@ class LandmarkLocalizer(Node):
 
     def callback_cones(self, msg):
         """コーン点群を受信した際のコールバック"""
-        target_frame = self.get_parameter('target_frame').value
+        target_frame = self.get_parameter('target_frame').value  # 'odom'
         source_frame = msg.header.frame_id
 
         # frame_id が空の場合はデフォルトを使用
         if not source_frame:
-            source_frame = 'lidar'  # または 'odom'
+            source_frame = 'base_link'
             self.get_logger().warn_once(f"PointCloud2 has empty frame_id, assuming '{source_frame}'")
 
-        # PointCloud2 から座標を抽出
+        # PointCloud2 から座標を抽出し、odom座標系に変換
         current_cones = []
         for p in point_cloud2.read_points(msg, field_names=("x", "y"), skip_nans=True):
-            # TF変換が必要な場合は変換する
-            if source_frame != target_frame:
-                try:
-                    # PointStamped を作成
-                    point_in = PointStamped()
-                    point_in.header = msg.header
-                    point_in.header.frame_id = source_frame
-                    point_in.point.x = float(p[0])
-                    point_in.point.y = float(p[1])
-                    point_in.point.z = 0.0
+            # confirmed_conesはbase_link座標系で来るので、常にodom座標系に変換
+            try:
+                # PointStamped を作成
+                point_in = PointStamped()
+                point_in.header = msg.header
+                point_in.header.frame_id = source_frame
+                point_in.point.x = float(p[0])
+                point_in.point.y = float(p[1])
+                point_in.point.z = 0.0
 
-                    # 変換実行 (最新のTFを使用)
-                    point_out = self.tf_buffer.transform(
-                        point_in, target_frame, timeout=rclpy.duration.Duration(seconds=0.1)
-                    )
-                    current_cones.append(np.array([point_out.point.x, point_out.point.y]))
-                except TransformException as ex:
-                    self.get_logger().warning(
-                        f"TF transform failed: {ex}"
-                    )
-                    return
-            else:
-                current_cones.append(np.array([p[0], p[1]]))
+                # base_link → odom に変換（オドメトリベースの変換）
+                point_out = self.tf_buffer.transform(
+                    point_in, target_frame, timeout=rclpy.duration.Duration(seconds=0.5)
+                )
+                current_cones.append(np.array([point_out.point.x, point_out.point.y]))
+            except TransformException as ex:
+                self.get_logger().warning(
+                    f"TF transform failed ({source_frame} -> {target_frame}): {ex}"
+                )
+                return
 
         if not current_cones:
             return
