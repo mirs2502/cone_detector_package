@@ -44,19 +44,21 @@ find_package(pluginlib REQUIRED)
 
 add_executable(scan_to_pointcloud src/scan_to_pointcloud.cpp)
 ament_target_dependencies(scan_to_pointcloud
- rclcpp 
- sensor_msgs 
+ rclcpp
+ sensor_msgs
  laser_geometry
  tf2
  tf2_ros
  tf2_sensor_msgs
  tf2_geometry_msgs
+ pcl_conversions
  )
 
 
 
 target_link_libraries(scan_to_pointcloud
   ${tf2_ros_LIBRARIES}
+  ${PCL_LIBRARIES}
 )
 # --- ここから追加 ---
 

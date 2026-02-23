@@ -22,6 +22,12 @@
 // unique_ptr, shared_ptr を使うために必要
 #include <memory>
 
+// PCL for filtering
+#include <pcl/point_cloud.h>
+#include <pcl/point_types.h>
+#include <pcl_conversions/pcl_conversions.h>
+#include <pcl/filters/conditional_removal.h>
+
 class ScanToPointCloudNode : public rclcpp::Node {
 public:
   // TFリスナーの初期化（★ C++エラーを修正 ★）
@@ -53,8 +59,31 @@ private:
       projector_.transformLaserScanToPointCloud(target_frame, *scan_msg,
                                                 cloud_msg, *tf_buffer_);
 
-      // 3. 変換後のPointCloud2をパブリッシュ
-      cloud_publisher_->publish(cloud_msg);
+      // 3. 距離フィルタリング: 3m以内の点のみを残す
+      pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_pcl(new pcl::PointCloud<pcl::PointXYZ>);
+      pcl::fromROSMsg(cloud_msg, *cloud_pcl);
+
+      pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered(new pcl::PointCloud<pcl::PointXYZ>);
+      const float max_distance = 3.0f; // 3m
+
+      for (const auto& point : cloud_pcl->points) {
+        float distance = std::sqrt(point.x * point.x + point.y * point.y + point.z * point.z);
+        if (distance <= max_distance) {
+          cloud_filtered->points.push_back(point);
+        }
+      }
+
+      cloud_filtered->width = cloud_filtered->points.size();
+      cloud_filtered->height = 1;
+      cloud_filtered->is_dense = true;
+
+      // 4. フィルタリング後のPointCloud2に変換
+      sensor_msgs::msg::PointCloud2 cloud_msg_filtered;
+      pcl::toROSMsg(*cloud_filtered, cloud_msg_filtered);
+      cloud_msg_filtered.header = cloud_msg.header;
+
+      // 5. フィルタリング後のPointCloud2をパブリッシュ
+      cloud_publisher_->publish(cloud_msg_filtered);
     } catch (const std::exception &ex) {
       RCLCPP_WARN(this->get_logger(), "scan_to_pointcloud: TF exception: %s",
                   ex.what());
